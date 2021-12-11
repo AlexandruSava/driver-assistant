@@ -1,6 +1,5 @@
 package com.example.driverassistant.view
 
-import android.app.Activity
 import android.car.Car
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
@@ -8,9 +7,10 @@ import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.driverassistant.R
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var car: Car
     private lateinit var carPropertyManager: CarPropertyManager
     private val permissions = arrayOf(
