@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 29
 
     defaultConfig {
         applicationId "com.example.driverassistant"
         minSdk 28
-        targetSdk 31
+        targetSdk 29
         versionCode 1
         versionName "1.0"
 
@@ -22,10 +22,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    useLibrary 'android.car'
 }
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0")
 }
