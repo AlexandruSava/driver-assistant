@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
                 requestPermissions(permissions, 1)
             }
         }
+
+        listenSensorData()
     }
 
     override fun onPause() {
