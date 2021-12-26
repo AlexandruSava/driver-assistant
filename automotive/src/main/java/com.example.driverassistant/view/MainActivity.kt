@@ -1,25 +1,38 @@
 package com.example.driverassistant.view
 
+import android.Manifest
 import android.car.Car
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
+import com.google.android.gms.location.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var car: Car
     private lateinit var carPropertyManager: CarPropertyManager
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
-        Car.PERMISSION_EXTERIOR_ENVIRONMENT
+        Car.PERMISSION_EXTERIOR_ENVIRONMENT,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
 
     private lateinit var speedTextView: TextView
     private lateinit var outsideTemperatureTextView: TextView
+    private lateinit var latitudeTextView: TextView
+    private lateinit var longitudeTextView: TextView
+
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
         speedTextView = findViewById(R.id.speedTextView)
         outsideTemperatureTextView = findViewById(R.id.outsideTemperatureTextView)
+        latitudeTextView = findViewById(R.id.latitudeTextView)
+        longitudeTextView = findViewById(R.id.longitudeTextView)
+
+        initializeLocation()
 
         initializeCar()
     }
@@ -88,5 +105,43 @@ class MainActivity : AppCompatActivity() {
                 "Error retrieving sensor data".also { outsideTemperatureTextView.text = it }
             }
         }, VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE, CarPropertyManager.SENSOR_RATE_ONCHANGE)
+    }
+
+    private fun initializeLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationRequest = LocationRequest.create().apply {
+            interval = TimeUnit.SECONDS.toMillis(5)
+            fastestInterval = TimeUnit.SECONDS.toMillis(3)
+            maxWaitTime = TimeUnit.MINUTES.toMillis(1)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+
+                val currentLocation = locationResult.lastLocation
+                latitudeTextView.text = currentLocation.latitude.toString()
+                longitudeTextView.text = currentLocation.longitude.toString()
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 }
