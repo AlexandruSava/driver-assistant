@@ -8,12 +8,14 @@ import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var car: Car
@@ -29,10 +31,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var outsideTemperatureTextView: TextView
     private lateinit var latitudeTextView: TextView
     private lateinit var longitudeTextView: TextView
+    private lateinit var speedLimitTextView: TextView
 
-    private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
+
+    private var i = 10
+    private var speedLimit = 30
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         outsideTemperatureTextView = findViewById(R.id.outsideTemperatureTextView)
         latitudeTextView = findViewById(R.id.latitudeTextView)
         longitudeTextView = findViewById(R.id.longitudeTextView)
+        speedLimitTextView = findViewById(R.id.speedLimitTextView)
 
         initializeLocation()
 
@@ -122,8 +129,14 @@ class MainActivity : AppCompatActivity() {
                 super.onLocationResult(locationResult)
 
                 val currentLocation = locationResult.lastLocation
-                latitudeTextView.text = currentLocation.latitude.toString()
-                longitudeTextView.text = currentLocation.longitude.toString()
+                val latitude = currentLocation.latitude
+                val longitude = currentLocation.longitude
+
+                latitudeTextView.text = latitude.toString()
+                longitudeTextView.text = longitude.toString()
+
+                val speedLimit = getSpeedLimit(latitude, longitude)
+                speedLimitTextView.text = speedLimit.toString()
             }
         }
 
@@ -143,5 +156,21 @@ class MainActivity : AppCompatActivity() {
             locationCallback,
             Looper.getMainLooper()
         )
+    }
+
+    private fun getSpeedLimit(latitude: Double, longitude: Double): Int {
+        val speedLimits = arrayOf(30, 50, 70, 80, 100, 130)
+
+        if (i % 10 == 0) {
+            val random = Random.nextInt(5)
+            speedLimit = speedLimits.elementAt(random)
+        }
+
+        i++
+
+        Log.d("Speed Limit: ", "Retrieving speed limit at $latitude $longitude location " +
+                "------> $speedLimit km/h")
+
+        return speedLimit
     }
 }
