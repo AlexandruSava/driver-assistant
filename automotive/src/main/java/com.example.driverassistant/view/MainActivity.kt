@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,6 +19,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var speedCallback: CarPropertyManager.CarPropertyEventCallback
+    private lateinit var temperatureCallback: CarPropertyManager.CarPropertyEventCallback
+
     private lateinit var car: Car
     private lateinit var carPropertyManager: CarPropertyManager
     private val permissions = arrayOf(
@@ -33,12 +37,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var longitudeTextView: TextView
     private lateinit var speedLimitTextView: TextView
 
+    private lateinit var startButton: Button
+    private lateinit var stopButton: Button
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
 
     private var i = 10
     private var speedLimit = 30
+    private var sessionStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +57,32 @@ class MainActivity : AppCompatActivity() {
         latitudeTextView = findViewById(R.id.latitudeTextView)
         longitudeTextView = findViewById(R.id.longitudeTextView)
         speedLimitTextView = findViewById(R.id.speedLimitTextView)
-
-        initializeLocation()
+        startButton = findViewById(R.id.startButton)
+        stopButton = findViewById(R.id.stopButton)
 
         initializeCar()
+
+        startButton.setOnClickListener {
+            if (!sessionStarted) {
+                sessionStarted = true
+
+                Log.d("SESSION", "SESSION HAS STARTED")
+
+                initializeLocation()
+                listenSensorData()
+            }
+        }
+
+        stopButton.setOnClickListener {
+            if (sessionStarted) {
+                sessionStarted = false
+
+                Log.d("SESSION", "SESSION HAS STOPPED")
+
+                stopLocationRetrieval()
+                stopSensorDataRetrieval()
+            }
+        }
     }
 
     override fun onResume() {
@@ -64,7 +94,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        listenSensorData()
+        if (sessionStarted) {
+            listenSensorData()
+        }
     }
 
     override fun onPause() {
@@ -86,24 +118,22 @@ class MainActivity : AppCompatActivity() {
 
         car = Car.createCar(this)
         carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager
-
-        listenSensorData()
     }
 
     private fun listenSensorData() {
 
-        carPropertyManager.registerCallback(object : CarPropertyManager.CarPropertyEventCallback {
+        speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
-                val speed : Float = carPropertyValue.value as Float
+                val speed: Float = carPropertyValue.value as Float
                 speedTextView.text = (speed * 3.6).toInt().toString()
             }
 
             override fun onErrorEvent(p0: Int, p1: Int) {
                 "Error retrieving sensor data".also { speedTextView.text = it }
             }
-        }, VehiclePropertyIds.PERF_VEHICLE_SPEED, CarPropertyManager.SENSOR_RATE_NORMAL)
+        }
 
-        carPropertyManager.registerCallback(object : CarPropertyManager.CarPropertyEventCallback {
+        temperatureCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
                 outsideTemperatureTextView.text = carPropertyValue.value.toString()
             }
@@ -111,7 +141,19 @@ class MainActivity : AppCompatActivity() {
             override fun onErrorEvent(p0: Int, p1: Int) {
                 "Error retrieving sensor data".also { outsideTemperatureTextView.text = it }
             }
-        }, VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE, CarPropertyManager.SENSOR_RATE_ONCHANGE)
+        }
+
+        carPropertyManager.registerCallback(
+            speedCallback,
+            VehiclePropertyIds.PERF_VEHICLE_SPEED,
+            CarPropertyManager.SENSOR_RATE_NORMAL
+        )
+
+        carPropertyManager.registerCallback(
+            temperatureCallback,
+            VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
     }
 
     private fun initializeLocation() {
@@ -156,6 +198,17 @@ class MainActivity : AppCompatActivity() {
             locationCallback,
             Looper.getMainLooper()
         )
+    }
+
+    private fun stopLocationRetrieval() {
+        fusedLocationClient.removeLocationUpdates(
+            locationCallback
+        )
+    }
+
+    private fun stopSensorDataRetrieval() {
+        carPropertyManager.unregisterCallback(speedCallback)
+        carPropertyManager.unregisterCallback(temperatureCallback)
     }
 
     private fun getSpeedLimit(latitude: Double, longitude: Double): Int {
