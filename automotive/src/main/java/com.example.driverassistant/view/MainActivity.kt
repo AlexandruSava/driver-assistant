@@ -201,7 +201,7 @@ class MainActivity : AppCompatActivity() {
                 sensorData = SensorData(speed, temperature, currentLocation, speedLimit)
 
                 mainController.addSensorData(sensorData)
-                val score: Int = mainController.analyzeDrivingSession()
+                val score: Float = mainController.analyzeDrivingSession()
 
                 drivingSessionScoreTextView.text = score.toString()
             }
