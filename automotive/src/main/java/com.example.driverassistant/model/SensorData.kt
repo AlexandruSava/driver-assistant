@@ -4,7 +4,7 @@ import android.location.Location
 
 data class SensorData(
     val speed: Int,
-    val outsideTemp: Float,
+    val outsideTemp: Int,
     val location: Location,
     val speedLimit: Int
 )

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:textAlignment="center"
-        android:textSize="96sp"
+        android:textSize="60sp"
         android:visibility="visible" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:textAlignment="center"
-        android:textSize="96sp"
+        android:textSize="60sp"
         android:visibility="visible" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:textAlignment="center"
-        android:textSize="96sp"
+        android:textSize="60sp"
         android:visibility="visible" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:textAlignment="center"
-        android:textSize="96sp"
+        android:textSize="60sp"
         android:visibility="visible" />
 
     <TextView
@@ -46,7 +46,16 @@
         android:layout_height="wrap_content"
         android:text="@string/textview"
         android:textAlignment="center"
-        android:textSize="96sp"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/drivingSessionScoreTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
         android:visibility="visible" />
 
     <Button

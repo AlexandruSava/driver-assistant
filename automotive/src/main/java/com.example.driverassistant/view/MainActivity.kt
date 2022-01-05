@@ -6,6 +6,7 @@ import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -14,11 +15,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
+import com.example.driverassistant.controller.MainController
+import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
+    private val mainController = MainController()
+
     private lateinit var speedCallback: CarPropertyManager.CarPropertyEventCallback
     private lateinit var temperatureCallback: CarPropertyManager.CarPropertyEventCallback
 
@@ -36,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var latitudeTextView: TextView
     private lateinit var longitudeTextView: TextView
     private lateinit var speedLimitTextView: TextView
+    private lateinit var drivingSessionScoreTextView: TextView
 
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
@@ -45,8 +51,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
 
     private var i = 10
+    private var speed = 0
     private var speedLimit = 30
+    private var temperature = 0
+    private lateinit var currentLocation: Location
+
     private var sessionStarted = false
+
+    private lateinit var sensorData: SensorData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         latitudeTextView = findViewById(R.id.latitudeTextView)
         longitudeTextView = findViewById(R.id.longitudeTextView)
         speedLimitTextView = findViewById(R.id.speedLimitTextView)
+        drivingSessionScoreTextView = findViewById(R.id.drivingSessionScoreTextView)
         startButton = findViewById(R.id.startButton)
         stopButton = findViewById(R.id.stopButton)
 
@@ -70,6 +83,8 @@ class MainActivity : AppCompatActivity() {
 
                 initializeLocation()
                 listenSensorData()
+
+                mainController.initializeDrivingSession()
             }
         }
 
@@ -81,6 +96,8 @@ class MainActivity : AppCompatActivity() {
 
                 stopLocationRetrieval()
                 stopSensorDataRetrieval()
+
+                mainController.stopDrivingSession()
             }
         }
     }
@@ -124,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 
         speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
-                val speed: Float = carPropertyValue.value as Float
+                speed = (carPropertyValue.value as Float).toInt()
                 speedTextView.text = (speed * 3.6).toInt().toString()
             }
 
@@ -135,6 +152,7 @@ class MainActivity : AppCompatActivity() {
 
         temperatureCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
+                temperature = (carPropertyValue.value as Float).toInt()
                 outsideTemperatureTextView.text = carPropertyValue.value.toString()
             }
 
@@ -170,7 +188,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
 
-                val currentLocation = locationResult.lastLocation
+                currentLocation = locationResult.lastLocation
                 val latitude = currentLocation.latitude
                 val longitude = currentLocation.longitude
 
@@ -179,6 +197,13 @@ class MainActivity : AppCompatActivity() {
 
                 val speedLimit = getSpeedLimit(latitude, longitude)
                 speedLimitTextView.text = speedLimit.toString()
+
+                sensorData = SensorData(speed, temperature, currentLocation, speedLimit)
+
+                mainController.addSensorData(sensorData)
+                val score: Int = mainController.analyzeDrivingSession()
+
+                drivingSessionScoreTextView.text = score.toString()
             }
         }
 
