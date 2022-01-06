@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "575723708461",
+    "project_id": "driver-assistant-f8cd9",
+    "storage_bucket": "driver-assistant-f8cd9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575723708461:android:b693988f04fa2ab79798a4",
+        "android_client_info": {
+          "package_name": "com.example.driverassistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575723708461-5bbtvd74h02k3nhk7ji5ksgku9d3llie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.driverassistant",
+            "certificate_hash": "22531bb9cdad856140c825826fbb5f534adf9b2c"
+          }
+        },
+        {
+          "client_id": "575723708461-klcghfmv7922h70shgbbh3qfbr3nvm3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR0aYBSdYQh2RFc8Suqz761Oqz-wvRwNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575723708461-klcghfmv7922h70shgbbh3qfbr3nvm3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
