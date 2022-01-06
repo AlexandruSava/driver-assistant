@@ -5,6 +5,7 @@ import android.car.Car
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.example.driverassistant.R
 import com.example.driverassistant.controller.MainController
 import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
+import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
+    private lateinit var logoutButton: Button
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -64,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
+        val userId = intent.getStringExtra("userId")
+        val emailId = intent.getStringExtra("emailId")
+
+        println(userId)
+        println(emailId)
+
         speedTextView = findViewById(R.id.speedTextView)
         outsideTemperatureTextView = findViewById(R.id.outsideTemperatureTextView)
         latitudeTextView = findViewById(R.id.latitudeTextView)
@@ -72,32 +81,28 @@ class MainActivity : AppCompatActivity() {
         drivingSessionScoreTextView = findViewById(R.id.drivingSessionScoreTextView)
         startButton = findViewById(R.id.startButton)
         stopButton = findViewById(R.id.stopButton)
+        logoutButton = findViewById(R.id.logoutButton)
+
+        logoutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+
+            stopDrivingSession()
+
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         initializeCar()
 
         startButton.setOnClickListener {
             if (!sessionStarted) {
-                sessionStarted = true
-
-                Log.d("SESSION", "SESSION HAS STARTED")
-
-                initializeLocation()
-                listenSensorData()
-
-                mainController.initializeDrivingSession()
+                startDrivingSession()
             }
         }
 
         stopButton.setOnClickListener {
             if (sessionStarted) {
-                sessionStarted = false
-
-                Log.d("SESSION", "SESSION HAS STOPPED")
-
-                stopLocationRetrieval()
-                stopSensorDataRetrieval()
-
-                mainController.stopDrivingSession()
+                stopDrivingSession()
             }
         }
     }
@@ -122,6 +127,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         super.onPause()
+    }
+
+    private fun startDrivingSession() {
+        sessionStarted = true
+
+        Log.d("SESSION", "SESSION HAS STARTED")
+
+        initializeLocation()
+        listenSensorData()
+
+        mainController.initializeDrivingSession()
+    }
+
+    private fun stopDrivingSession() {
+        sessionStarted = false
+
+        Log.d("SESSION", "SESSION HAS STOPPED")
+
+        stopLocationRetrieval()
+        stopSensorDataRetrieval()
+
+        mainController.stopDrivingSession()
     }
 
     private fun initializeCar() {

@@ -11,4 +11,5 @@
     <string name="register_screen">Register Screen</string>
     <string name="goto_register">Go To Register</string>
     <string name="goto_login">Go To Login</string>
+    <string name="logout">Logout</string>
 </resources>

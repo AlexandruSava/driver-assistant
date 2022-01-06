@@ -75,4 +75,13 @@
         android:text="@string/stop_session"
         android:textColor="@android:color/white"
         android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:background="#D50000"
+        android:text="@string/logout"
+        android:textColor="@android:color/white"
+        android:textSize="60sp" />
 </LinearLayout>
