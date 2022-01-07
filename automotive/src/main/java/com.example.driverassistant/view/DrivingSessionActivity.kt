@@ -16,15 +16,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
-import com.example.driverassistant.controller.MainController
+import com.example.driverassistant.controller.DrivingSessionController
 import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity() {
-    private val mainController = MainController()
+class DrivingSessionActivity : AppCompatActivity() {
+    private val mainController = DrivingSessionController()
 
     private lateinit var speedCallback: CarPropertyManager.CarPropertyEventCallback
     private lateinit var temperatureCallback: CarPropertyManager.CarPropertyEventCallback
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_activity)
+        setContentView(R.layout.driving_session_activity)
 
         val userId = intent.getStringExtra("userId")
         val emailId = intent.getStringExtra("emailId")

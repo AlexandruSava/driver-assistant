@@ -3,7 +3,7 @@ package com.example.driverassistant.controller
 import com.example.driverassistant.model.SensorData
 import kotlin.math.pow
 
-class MainController {
+class DrivingSessionController {
 
     private var sensorDataList: ArrayList<SensorData> = ArrayList()
     private lateinit var currentSensorData: SensorData
@@ -53,7 +53,7 @@ class MainController {
             val mistakeScoreReduction = basicPower.pow(basicScoreReduction * mistakeRatio * speedRatio)
             println(mistakeScoreReduction)
 
-            if (mistakeScoreReduction * 0.1f > maxDrivingSessionScore) {
+            if (mistakeScoreReduction * 0.3f > maxDrivingSessionScore) {
                 maxDrivingSessionScore = 0f
             } else {
                 maxDrivingSessionScore -= mistakeScoreReduction * 0.3f

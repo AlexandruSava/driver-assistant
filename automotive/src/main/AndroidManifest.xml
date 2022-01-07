@@ -24,7 +24,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
 
         <activity android:exported="true"
-            android:name=".view.MainActivity">
+            android:name=".view.DrivingSessionActivity">
 
         </activity>
 
