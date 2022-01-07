@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Driver Assistant</string>
+    <string name="textview">TextView</string>
+    <string name="start_session">Start Session</string>
+    <string name="stop_session">Stop Session</string>
+    <string name="hint_email">abc@gmail.com</string>
+    <string name="hint_password">password</string>
+    <string name="login">Login</string>
+    <string name="login_screen">Login Screen</string>
+    <string name="register">register</string>
+    <string name="register_screen">Register Screen</string>
+    <string name="goto_register">Go To Register</string>
+    <string name="goto_login">Go To Login</string>
+    <string name="logout">Logout</string>
 </resources>

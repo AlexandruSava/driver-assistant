@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/speedTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/outsideTemperatureTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/latitudeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/longitudeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/speedLimitTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/drivingSessionScoreTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textview"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:background="#3B883E"
+        android:text="@string/start_session"
+        android:textColor="@android:color/white"
+        android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:background="#F44336"
+        android:text="@string/stop_session"
+        android:textColor="@android:color/white"
+        android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:background="#D50000"
+        android:text="@string/logout"
+        android:textColor="@android:color/white"
+        android:textSize="60sp" />
+</LinearLayout>
