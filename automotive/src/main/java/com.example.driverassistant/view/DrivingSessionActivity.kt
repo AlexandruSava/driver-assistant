@@ -13,6 +13,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
@@ -31,6 +32,7 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     private lateinit var car: Car
     private lateinit var carPropertyManager: CarPropertyManager
+
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
         Car.PERMISSION_EXTERIOR_ENVIRONMENT,
@@ -72,6 +74,7 @@ class DrivingSessionActivity : AppCompatActivity() {
 
         Log.d("SESSION USER:", "$userId $emailId")
 
+        requestPermissions()
         initializeTextViews()
         initializeButtonsListeners()
         initializeCar()
@@ -81,12 +84,6 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        for (permission in permissions) {
-            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(permissions, 1)
-            }
-        }
 
         if (sessionStarted) {
             listenSensorDataUpdates()
@@ -99,6 +96,17 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
 
         super.onPause()
+    }
+
+    private fun requestPermissions() {
+        val requestMultiplePermission =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                permissions.entries.forEach {
+                    Log.e("DEBUG", "${it.key} = ${it.value}")
+                }
+            }
+
+        requestMultiplePermission.launch(permissions)
     }
 
     private fun initializeTextViews() {

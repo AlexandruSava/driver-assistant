@@ -63,7 +63,6 @@ class DrivingSessionController {
 
     private fun reduceDrivingScore(mistakeRatio: Float, speedRatio: Float) {
         val mistakeScoreReduction = basicPower.pow(basicScoreReduction * mistakeRatio * speedRatio)
-        println(mistakeScoreReduction)
 
         if (mistakeScoreReduction * 0.3f > maxDrivingSessionScore) {
             maxDrivingSessionScore = 0f
