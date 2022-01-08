@@ -12,4 +12,7 @@
     <string name="goto_register">Go To Register</string>
     <string name="goto_login">Go To Login</string>
     <string name="logout">Logout</string>
+    <string name="driving_score">Driving Score</string>
+    <string name="session_history">Driver Sessions History</string>
+    <string name="improve_skills">Improve Driving Skills</string>
 </resources>
