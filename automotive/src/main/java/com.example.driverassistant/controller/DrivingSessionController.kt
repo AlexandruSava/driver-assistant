@@ -1,29 +1,59 @@
 package com.example.driverassistant.controller
 
 import android.util.Log
+import com.example.driverassistant.model.DrivingSession
+import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.SensorData
 import kotlin.math.pow
 
 class DrivingSessionController {
 
-    private var sensorDataList: ArrayList<SensorData> = ArrayList()
-    private lateinit var currentSensorData: SensorData
+    private lateinit var drivingSession: DrivingSession
 
+    private lateinit var userId: String
+    private lateinit var email: String
+    private var startTime: Long = 0
+    private var endTime: Long = 0
     private var drivingSessionScore: Float = 100f
     private var maxDrivingSessionScore: Float = 100f
+    private var notificationList: ArrayList<Notification> = ArrayList()
+
+    private var speedingTimes: Int = 0
+
+    private var sensorDataList: ArrayList<SensorData> = ArrayList()
+    private lateinit var currentSensorData: SensorData
 
     private val basicScoreReduction: Float = 0.3f
     private val basicScoreGain: Float = 0.3f
 
     private val basicPower: Float = 2f
 
-    fun startDrivingSession() {
+    fun startDrivingSession(userId: String, email: String) {
+        this.userId = userId
+        this.email = email
+        startTime = System.currentTimeMillis()
         drivingSessionScore = 100f
         maxDrivingSessionScore = 100f
     }
 
     fun stopDrivingSession() {
+        endTime = System.currentTimeMillis()
+        drivingSession = DrivingSession(
+            userId,
+            email,
+            startTime,
+            endTime,
+            drivingSessionScore,
+            maxDrivingSessionScore,
+            notificationList
+        )
+        println(drivingSession)
         clearSensorDataList()
+        clearNotificationDataList()
+    }
+
+    private fun clearNotificationDataList() {
+        notificationList.clear()
     }
 
     fun addSensorData(sensorData: SensorData){
@@ -41,7 +71,9 @@ class DrivingSessionController {
         val speedRatio = (currentSensorData.speed * 3.6 / (currentSensorData.speedLimit + 10f).toDouble()).toFloat()
 
         if (speedRatio > 1) {
+            speedingTimes++
             reduceDrivingScore(mistakeRatio, speedRatio)
+            issueSpeedNotification(speedingTimes)
         } else {
             increaseDrivingScore()
         }
@@ -51,6 +83,18 @@ class DrivingSessionController {
                 "$maxDrivingSessionScore")
 
         return drivingSessionScore
+    }
+
+    private fun issueSpeedNotification(speedingTimes: Int) {
+        val notification = Notification(
+            "speeding",
+            "Respect Speed Limit",
+            "We just noticed that you were speeding $speedingTimes in this session.",
+            speedingTimes,
+            System.currentTimeMillis()
+        )
+        notificationList.add(notification)
+        println(notification)
     }
 
     private fun increaseDrivingScore() {
@@ -63,7 +107,6 @@ class DrivingSessionController {
 
     private fun reduceDrivingScore(mistakeRatio: Float, speedRatio: Float) {
         val mistakeScoreReduction = basicPower.pow(basicScoreReduction * mistakeRatio * speedRatio)
-        println(mistakeScoreReduction)
 
         if (mistakeScoreReduction * 0.3f > maxDrivingSessionScore) {
             maxDrivingSessionScore = 0f

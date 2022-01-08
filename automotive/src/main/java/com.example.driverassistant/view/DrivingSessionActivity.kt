@@ -13,6 +13,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
@@ -26,11 +27,15 @@ import kotlin.random.Random
 class DrivingSessionActivity : AppCompatActivity() {
     private val mainController = DrivingSessionController()
 
+    private lateinit var userId: String
+    private lateinit var email: String
+
     private lateinit var speedCallback: CarPropertyManager.CarPropertyEventCallback
     private lateinit var temperatureCallback: CarPropertyManager.CarPropertyEventCallback
 
     private lateinit var car: Car
     private lateinit var carPropertyManager: CarPropertyManager
+
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
         Car.PERMISSION_EXTERIOR_ENVIRONMENT,
@@ -67,11 +72,8 @@ class DrivingSessionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driving_session_activity)
 
-        val userId = intent.getStringExtra("userId")
-        val emailId = intent.getStringExtra("emailId")
-
-        Log.d("SESSION USER:", "$userId $emailId")
-
+        setUserAndEmail()
+        requestPermissions()
         initializeTextViews()
         initializeButtonsListeners()
         initializeCar()
@@ -81,12 +83,6 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        for (permission in permissions) {
-            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(permissions, 1)
-            }
-        }
 
         if (sessionStarted) {
             listenSensorDataUpdates()
@@ -99,6 +95,27 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
 
         super.onPause()
+    }
+
+    private fun setUserAndEmail() {
+        val userIdString = intent.getStringExtra("userId")
+        val emailString = intent.getStringExtra("email")
+        if (!userIdString.isNullOrEmpty() && !emailString.isNullOrEmpty()) {
+            userId = userIdString
+            email = emailString
+        }
+        Log.d("SESSION USER:", "$userId $email")
+    }
+
+    private fun requestPermissions() {
+        val requestMultiplePermission =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                permissions.entries.forEach {
+                    Log.e("DEBUG", "${it.key} = ${it.value}")
+                }
+            }
+
+        requestMultiplePermission.launch(permissions)
     }
 
     private fun initializeTextViews() {
@@ -125,7 +142,7 @@ class DrivingSessionActivity : AppCompatActivity() {
 
         startButton.setOnClickListener {
             if (!sessionStarted) {
-                startDrivingSession()
+                startDrivingSession(userId, email)
             }
         }
 
@@ -183,7 +200,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
     }
 
-    private fun startDrivingSession() {
+    private fun startDrivingSession(userId: String, email: String) {
         sessionStarted = true
 
         Log.d("SESSION", "SESSION HAS STARTED")
@@ -191,7 +208,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         listenLocationUpdates()
         listenSensorDataUpdates()
 
-        mainController.startDrivingSession()
+        mainController.startDrivingSession(userId, email)
     }
 
     private fun stopDrivingSession() {
