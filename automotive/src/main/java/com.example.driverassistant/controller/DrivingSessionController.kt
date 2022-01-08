@@ -1,6 +1,7 @@
 package com.example.driverassistant.controller
 
 import android.util.Log
+import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.SensorData
 import kotlin.math.pow
 
@@ -16,6 +17,9 @@ class DrivingSessionController {
     private val basicScoreGain: Float = 0.3f
 
     private val basicPower: Float = 2f
+
+    private var notificationList: ArrayList<Notification> = ArrayList()
+    private var speedingTimes: Int = 0
 
     fun startDrivingSession() {
         drivingSessionScore = 100f
@@ -41,7 +45,9 @@ class DrivingSessionController {
         val speedRatio = (currentSensorData.speed * 3.6 / (currentSensorData.speedLimit + 10f).toDouble()).toFloat()
 
         if (speedRatio > 1) {
+            speedingTimes++
             reduceDrivingScore(mistakeRatio, speedRatio)
+            issueSpeedNotification(speedingTimes)
         } else {
             increaseDrivingScore()
         }
@@ -51,6 +57,18 @@ class DrivingSessionController {
                 "$maxDrivingSessionScore")
 
         return drivingSessionScore
+    }
+
+    private fun issueSpeedNotification(speedingTimes: Int) {
+        val notification = Notification(
+            "speeding",
+            "Respect Speed Limit",
+            "We just noticed that you were speeding $speedingTimes in this session.",
+            speedingTimes,
+            System.currentTimeMillis()
+        )
+        notificationList.add(notification)
+        println(notification)
     }
 
     private fun increaseDrivingScore() {
