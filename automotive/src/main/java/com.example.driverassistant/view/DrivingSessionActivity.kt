@@ -27,6 +27,9 @@ import kotlin.random.Random
 class DrivingSessionActivity : AppCompatActivity() {
     private val mainController = DrivingSessionController()
 
+    private lateinit var userId: String
+    private lateinit var email: String
+
     private lateinit var speedCallback: CarPropertyManager.CarPropertyEventCallback
     private lateinit var temperatureCallback: CarPropertyManager.CarPropertyEventCallback
 
@@ -69,11 +72,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driving_session_activity)
 
-        val userId = intent.getStringExtra("userId")
-        val emailId = intent.getStringExtra("emailId")
-
-        Log.d("SESSION USER:", "$userId $emailId")
-
+        setUserAndEmail()
         requestPermissions()
         initializeTextViews()
         initializeButtonsListeners()
@@ -96,6 +95,16 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
 
         super.onPause()
+    }
+
+    private fun setUserAndEmail() {
+        val userIdString = intent.getStringExtra("userId")
+        val emailString = intent.getStringExtra("email")
+        if (!userIdString.isNullOrEmpty() && !emailString.isNullOrEmpty()) {
+            userId = userIdString
+            email = emailString
+        }
+        Log.d("SESSION USER:", "$userId $email")
     }
 
     private fun requestPermissions() {
@@ -133,7 +142,7 @@ class DrivingSessionActivity : AppCompatActivity() {
 
         startButton.setOnClickListener {
             if (!sessionStarted) {
-                startDrivingSession()
+                startDrivingSession(userId, email)
             }
         }
 
@@ -191,7 +200,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
     }
 
-    private fun startDrivingSession() {
+    private fun startDrivingSession(userId: String, email: String) {
         sessionStarted = true
 
         Log.d("SESSION", "SESSION HAS STARTED")
@@ -199,7 +208,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         listenLocationUpdates()
         listenSensorDataUpdates()
 
-        mainController.startDrivingSession()
+        mainController.startDrivingSession(userId, email)
     }
 
     private fun stopDrivingSession() {

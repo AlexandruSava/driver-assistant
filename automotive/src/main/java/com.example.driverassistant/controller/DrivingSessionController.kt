@@ -1,33 +1,59 @@
 package com.example.driverassistant.controller
 
 import android.util.Log
+import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.SensorData
 import kotlin.math.pow
 
 class DrivingSessionController {
 
-    private var sensorDataList: ArrayList<SensorData> = ArrayList()
-    private lateinit var currentSensorData: SensorData
+    private lateinit var drivingSession: DrivingSession
 
+    private lateinit var userId: String
+    private lateinit var email: String
+    private var startTime: Long = 0
+    private var endTime: Long = 0
     private var drivingSessionScore: Float = 100f
     private var maxDrivingSessionScore: Float = 100f
+    private var notificationList: ArrayList<Notification> = ArrayList()
+
+    private var speedingTimes: Int = 0
+
+    private var sensorDataList: ArrayList<SensorData> = ArrayList()
+    private lateinit var currentSensorData: SensorData
 
     private val basicScoreReduction: Float = 0.3f
     private val basicScoreGain: Float = 0.3f
 
     private val basicPower: Float = 2f
 
-    private var notificationList: ArrayList<Notification> = ArrayList()
-    private var speedingTimes: Int = 0
-
-    fun startDrivingSession() {
+    fun startDrivingSession(userId: String, email: String) {
+        this.userId = userId
+        this.email = email
+        startTime = System.currentTimeMillis()
         drivingSessionScore = 100f
         maxDrivingSessionScore = 100f
     }
 
     fun stopDrivingSession() {
+        endTime = System.currentTimeMillis()
+        drivingSession = DrivingSession(
+            userId,
+            email,
+            startTime,
+            endTime,
+            drivingSessionScore,
+            maxDrivingSessionScore,
+            notificationList
+        )
+        println(drivingSession)
         clearSensorDataList()
+        clearNotificationDataList()
+    }
+
+    private fun clearNotificationDataList() {
+        notificationList.clear()
     }
 
     fun addSensorData(sensorData: SensorData){
