@@ -6,9 +6,9 @@
     <string name="hint_email">abc@gmail.com</string>
     <string name="hint_password">password</string>
     <string name="login">Login</string>
-    <string name="login_screen">Login Screen</string>
+    <string name="login_screen">Welcome back! Login</string>
     <string name="register">register</string>
-    <string name="register_screen">Register Screen</string>
+    <string name="register_screen">New here? Register</string>
     <string name="goto_register">Go To Register</string>
     <string name="goto_login">Go To Login</string>
     <string name="logout">Logout</string>

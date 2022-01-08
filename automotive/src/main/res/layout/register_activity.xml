@@ -1,60 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/register_screen"
         android:textAlignment="center"
-        android:textColor="#6E1F1F"
-        android:textSize="60sp"
-        android:textStyle="bold"/>
+        android:textColor="#004c40"
+        android:textSize="70dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/et_register_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_register_email"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:autofillHints="emailAddress"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_register_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/et_register_password"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="180dp"
         android:autofillHints="password"
+        android:hint="@string/hint_password"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textSize="60sp"
-        android:hint="@string/hint_password"/>
+        app:layout_constraintBottom_toBottomOf="@+id/btn_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_register_email" />
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#471212"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="620dp"
+        android:layout_marginEnd="100dp"
+        android:background="#00796b"
         android:gravity="center"
         android:text="@string/register"
-        android:textColor="#C5C5C5"
-        android:textSize="96sp"
-        android:textStyle="bold" />
+        android:textColor="#d3d3d3"
+        android:textSize="75dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goto_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_goto_login"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#124717"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="120dp"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/goto_login"
-        android:textColor="#C5C5C5"
-        android:textSize="96sp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:textColor="#48a999"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+</androidx.constraintlayout.widget.ConstraintLayout>
