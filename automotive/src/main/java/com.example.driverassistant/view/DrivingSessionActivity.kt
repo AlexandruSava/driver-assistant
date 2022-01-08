@@ -70,9 +70,38 @@ class DrivingSessionActivity : AppCompatActivity() {
         val userId = intent.getStringExtra("userId")
         val emailId = intent.getStringExtra("emailId")
 
-        println(userId)
-        println(emailId)
+        Log.d("SESSION USER:", "$userId $emailId")
 
+        initializeTextViews()
+        initializeButtonsListeners()
+        initializeCar()
+        initializeLocation()
+        initializeSensorDataCallbacks()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        for (permission in permissions) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, 1)
+            }
+        }
+
+        if (sessionStarted) {
+            listenSensorDataUpdates()
+        }
+    }
+
+    override fun onPause() {
+        if (car.isConnected) {
+            car.disconnect()
+        }
+
+        super.onPause()
+    }
+
+    private fun initializeTextViews() {
         speedTextView = findViewById(R.id.speedTextView)
         outsideTemperatureTextView = findViewById(R.id.outsideTemperatureTextView)
         latitudeTextView = findViewById(R.id.latitudeTextView)
@@ -82,7 +111,9 @@ class DrivingSessionActivity : AppCompatActivity() {
         startButton = findViewById(R.id.startButton)
         stopButton = findViewById(R.id.stopButton)
         logoutButton = findViewById(R.id.logoutButton)
+    }
 
+    private fun initializeButtonsListeners() {
         logoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
@@ -91,8 +122,6 @@ class DrivingSessionActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
-
-        initializeCar()
 
         startButton.setOnClickListener {
             if (!sessionStarted) {
@@ -107,50 +136,6 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        for (permission in permissions) {
-            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(permissions, 1)
-            }
-        }
-
-        if (sessionStarted) {
-            listenSensorData()
-        }
-    }
-
-    override fun onPause() {
-        if (car.isConnected) {
-            car.disconnect()
-        }
-
-        super.onPause()
-    }
-
-    private fun startDrivingSession() {
-        sessionStarted = true
-
-        Log.d("SESSION", "SESSION HAS STARTED")
-
-        initializeLocation()
-        listenSensorData()
-
-        mainController.initializeDrivingSession()
-    }
-
-    private fun stopDrivingSession() {
-        sessionStarted = false
-
-        Log.d("SESSION", "SESSION HAS STOPPED")
-
-        stopLocationRetrieval()
-        stopSensorDataRetrieval()
-
-        mainController.stopDrivingSession()
-    }
-
     private fun initializeCar() {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
             return
@@ -162,43 +147,6 @@ class DrivingSessionActivity : AppCompatActivity() {
 
         car = Car.createCar(this)
         carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager
-    }
-
-    private fun listenSensorData() {
-
-        speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
-            override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
-                speed = (carPropertyValue.value as Float).toInt()
-                speedTextView.text = (speed * 3.6).toInt().toString()
-            }
-
-            override fun onErrorEvent(p0: Int, p1: Int) {
-                "Error retrieving sensor data".also { speedTextView.text = it }
-            }
-        }
-
-        temperatureCallback = object : CarPropertyManager.CarPropertyEventCallback {
-            override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
-                temperature = (carPropertyValue.value as Float).toInt()
-                outsideTemperatureTextView.text = carPropertyValue.value.toString()
-            }
-
-            override fun onErrorEvent(p0: Int, p1: Int) {
-                "Error retrieving sensor data".also { outsideTemperatureTextView.text = it }
-            }
-        }
-
-        carPropertyManager.registerCallback(
-            speedCallback,
-            VehiclePropertyIds.PERF_VEHICLE_SPEED,
-            CarPropertyManager.SENSOR_RATE_NORMAL
-        )
-
-        carPropertyManager.registerCallback(
-            temperatureCallback,
-            VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE,
-            CarPropertyManager.SENSOR_RATE_ONCHANGE
-        )
     }
 
     private fun initializeLocation() {
@@ -233,7 +181,70 @@ class DrivingSessionActivity : AppCompatActivity() {
                 drivingSessionScoreTextView.text = score.toString()
             }
         }
+    }
 
+    private fun startDrivingSession() {
+        sessionStarted = true
+
+        Log.d("SESSION", "SESSION HAS STARTED")
+
+        listenLocationUpdates()
+        listenSensorDataUpdates()
+
+        mainController.startDrivingSession()
+    }
+
+    private fun stopDrivingSession() {
+        sessionStarted = false
+
+        Log.d("SESSION", "SESSION HAS STOPPED")
+
+        stopLocationUpdates()
+        stopSensorDataUpdates()
+
+        mainController.stopDrivingSession()
+    }
+
+    private fun listenSensorDataUpdates() {
+
+        carPropertyManager.registerCallback(
+            speedCallback,
+            VehiclePropertyIds.PERF_VEHICLE_SPEED,
+            CarPropertyManager.SENSOR_RATE_NORMAL
+        )
+
+        carPropertyManager.registerCallback(
+            temperatureCallback,
+            VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE,
+            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        )
+    }
+
+    private fun initializeSensorDataCallbacks() {
+        speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
+            override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
+                speed = (carPropertyValue.value as Float).toInt()
+                speedTextView.text = (speed * 3.6).toInt().toString()
+            }
+
+            override fun onErrorEvent(p0: Int, p1: Int) {
+                "Error retrieving sensor data".also { speedTextView.text = it }
+            }
+        }
+
+        temperatureCallback = object : CarPropertyManager.CarPropertyEventCallback {
+            override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
+                temperature = (carPropertyValue.value as Float).toInt()
+                outsideTemperatureTextView.text = carPropertyValue.value.toString()
+            }
+
+            override fun onErrorEvent(p0: Int, p1: Int) {
+                "Error retrieving sensor data".also { outsideTemperatureTextView.text = it }
+            }
+        }
+    }
+
+    private fun listenLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -252,13 +263,13 @@ class DrivingSessionActivity : AppCompatActivity() {
         )
     }
 
-    private fun stopLocationRetrieval() {
+    private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(
             locationCallback
         )
     }
 
-    private fun stopSensorDataRetrieval() {
+    private fun stopSensorDataUpdates() {
         carPropertyManager.unregisterCallback(speedCallback)
         carPropertyManager.unregisterCallback(temperatureCallback)
     }
@@ -273,8 +284,8 @@ class DrivingSessionActivity : AppCompatActivity() {
 
         i++
 
-        Log.d("Speed Limit: ", "Retrieving speed limit at $latitude $longitude location " +
-                "------> $speedLimit km/h")
+//        Log.d("Speed Limit: ", "Retrieving speed limit at $latitude $longitude location " +
+//                "------> $speedLimit km/h")
 
         return speedLimit
     }
