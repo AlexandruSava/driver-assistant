@@ -6,6 +6,7 @@ import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -148,9 +149,20 @@ class DrivingSessionActivity : AppCompatActivity() {
                 val score: Float = mainController.analyzeDrivingSession()
 
                 scoreTextView.text = score.toInt().toString()
+                setScoreTextViewColor(score.toInt())
 
                 val notificationList = mainController.getNotificationList()
             }
+        }
+    }
+
+    private fun setScoreTextViewColor(score: Int) {
+        when (score) {
+            in 85..100 -> scoreTextView.setTextColor(Color.parseColor("#FF4BC100"))
+            in 75..84 -> scoreTextView.setTextColor(Color.parseColor("#FF64DD17"))
+            in 60..74 -> scoreTextView.setTextColor(Color.parseColor("#FFE1BC00"))
+            in 50..59 -> scoreTextView.setTextColor(Color.parseColor("#FFE14F00"))
+            in 0..49 -> scoreTextView.setTextColor(Color.parseColor("#E10000"))
         }
     }
 
