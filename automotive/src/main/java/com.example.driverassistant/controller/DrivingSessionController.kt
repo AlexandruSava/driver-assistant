@@ -120,4 +120,8 @@ class DrivingSessionController {
             drivingSessionScore -= mistakeScoreReduction
         }
     }
+
+    fun getNotificationList(): ArrayList<Notification> {
+        return notificationList
+    }
 }
