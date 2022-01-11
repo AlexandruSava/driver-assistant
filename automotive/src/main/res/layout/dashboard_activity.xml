@@ -74,6 +74,7 @@
                 android:layout_marginBottom="31dp"
                 android:text="80"
                 android:textSize="75dp"
+                android:textColor="#FF4BC100"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
