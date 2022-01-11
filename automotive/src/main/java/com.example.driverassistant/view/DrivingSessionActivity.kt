@@ -16,8 +16,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
-import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.controller.DrivingSessionController
+import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
@@ -40,6 +40,8 @@ class DrivingSessionActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
 
     private lateinit var scoreTextView: TextView
+    private lateinit var notificationTitleTextView: TextView
+    private lateinit var notificationMessageTextView: TextView
     private lateinit var stopButton: Button
 
     private var i = 10
@@ -94,6 +96,8 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     private fun initializeTextViews() {
         scoreTextView = findViewById(R.id.textView4)
+        notificationTitleTextView = findViewById(R.id.textView7)
+        notificationMessageTextView = findViewById(R.id.textView2)
     }
 
     private fun initializeButtonsListeners() {
@@ -145,7 +149,9 @@ class DrivingSessionActivity : AppCompatActivity() {
                 scoreTextView.text = score.toInt().toString()
                 setScoreTextViewColor(score.toInt())
 
-                val notificationList = mainController.getNotificationList()
+                val notification = mainController.getLastNotification()
+                notificationTitleTextView.text = notification.title
+                notificationMessageTextView.text = notification.message
             }
         }
     }

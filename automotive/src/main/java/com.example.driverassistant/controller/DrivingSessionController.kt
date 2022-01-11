@@ -88,7 +88,7 @@ class DrivingSessionController {
         val notification = Notification(
             "speeding",
             "Respect Speed Limit",
-            "We just noticed that you were speeding $speedingTimes in this session.",
+            "We just noticed that you were speeding $speedingTimes times in this session.",
             speedingTimes,
             System.currentTimeMillis()
         )
@@ -120,8 +120,18 @@ class DrivingSessionController {
         }
     }
 
-    fun getNotificationList(): ArrayList<Notification> {
-        return notificationList
+    fun getLastNotification(): Notification {
+        return if (speedingTimes > 0) {
+            notificationList.last()
+        } else {
+            Notification(
+                "good-driving",
+                "Drive carefully",
+                "We noticed you're quite a good driver. No mistakes yes.",
+                0,
+                0L
+            )
+        }
     }
 
     fun getDrivingSession(): DrivingSession {
