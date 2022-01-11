@@ -48,11 +48,6 @@ class DrivingSessionController {
             notificationList
         )
         clearSensorDataList()
-        clearNotificationDataList()
-    }
-
-    private fun clearNotificationDataList() {
-        notificationList.clear()
     }
 
     fun addSensorData(sensorData: SensorData){
