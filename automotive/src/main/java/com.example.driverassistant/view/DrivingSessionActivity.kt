@@ -12,11 +12,11 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.widget.Button
-import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.driverassistant.R
+import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.controller.DrivingSessionController
 import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
@@ -41,7 +41,6 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     private lateinit var scoreTextView: TextView
     private lateinit var stopButton: Button
-    private lateinit var notificationListView: ListView
 
     private var i = 10
     private var speed = 0
@@ -181,6 +180,13 @@ class DrivingSessionActivity : AppCompatActivity() {
         stopSensorDataUpdates()
 
         mainController.stopDrivingSession()
+        val drivingSession = mainController.getDrivingSession()
+        DatabaseController()
+            .writeDrivingSessionsDataInLocalStorage(
+                this,
+                userId = userId,
+                drivingSession = drivingSession
+            )
         onBackPressed()
     }
 

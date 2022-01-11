@@ -11,10 +11,13 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.driverassistant.R
+import com.example.driverassistant.database.DatabaseController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class DashboardActivity : AppCompatActivity(){
+
+    private val databaseController = DatabaseController()
 
     private lateinit var userId: String
     private lateinit var email: String
@@ -38,8 +41,21 @@ class DashboardActivity : AppCompatActivity(){
 
         requestPermissions()
         setUserAndEmail()
+        getStorageData()
         initializeTextViews()
         initializeButtons()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getStorageData()
+    }
+
+    private fun getStorageData() {
+        val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
+        if (initialized) {
+            databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+        }
     }
 
     private fun initializeButtons() {

@@ -16,11 +16,11 @@ class DrivingSessionController {
     private var endTime: Long = 0
     private var drivingSessionScore: Float = 100f
     private var maxDrivingSessionScore: Float = 100f
-    private var notificationList: ArrayList<Notification> = ArrayList()
+    private var notificationList = ArrayList<Notification>()
 
     private var speedingTimes: Int = 0
 
-    private var sensorDataList: ArrayList<SensorData> = ArrayList()
+    private var sensorDataList = ArrayList<SensorData>()
     private lateinit var currentSensorData: SensorData
 
     private val basicScoreReduction: Float = 0.3f
@@ -47,7 +47,6 @@ class DrivingSessionController {
             maxDrivingSessionScore,
             notificationList
         )
-        println(drivingSession)
         clearSensorDataList()
         clearNotificationDataList()
     }
@@ -123,5 +122,9 @@ class DrivingSessionController {
 
     fun getNotificationList(): ArrayList<Notification> {
         return notificationList
+    }
+
+    fun getDrivingSession(): DrivingSession {
+        return drivingSession
     }
 }
