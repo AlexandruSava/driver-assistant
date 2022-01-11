@@ -63,7 +63,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginBottom="10dp"
-                android:background="#730303"
                 android:maxHeight="80dp"
                 android:minWidth="80dp"
                 android:minHeight="80dp"

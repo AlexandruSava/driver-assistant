@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="40dp"
@@ -69,7 +69,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,11 +84,11 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="960dp"
-                android:layout_height="85dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="800sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="50dp"
                 android:paddingLeft="20dp"
                 android:text="We noticed you were speeding at 20:10, please slow down We noticed you were speeding at 20:10, please slow down."
                 android:textSize="30dp"
@@ -99,10 +99,13 @@
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
+                android:layout_width="800sp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginEnd="100dp"
                 android:layout_marginBottom="30dp"
+                android:gravity="center"
                 android:text="Respect speed limit"
                 android:textSize="50dp"
                 android:textStyle="bold"
