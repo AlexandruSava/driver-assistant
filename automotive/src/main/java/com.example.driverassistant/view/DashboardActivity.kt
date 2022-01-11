@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,8 @@ class DashboardActivity : AppCompatActivity(){
     private lateinit var welcomeTextView: TextView
     private lateinit var startSessionButton: Button
     private lateinit var logoutButton: Button
+
+    private lateinit var improveSkillsButton: ImageButton
 
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
@@ -42,6 +45,7 @@ class DashboardActivity : AppCompatActivity(){
     private fun initializeButtons() {
         startSessionButton = findViewById(R.id.button3)
         logoutButton = findViewById(R.id.logout_btn)
+        improveSkillsButton = findViewById(R.id.improve_skills_btn)
 
         startSessionButton.setOnClickListener {
             val intent = Intent(this, DrivingSessionActivity::class.java)
@@ -55,6 +59,11 @@ class DashboardActivity : AppCompatActivity(){
             Firebase.auth.signOut()
             startActivity(intent)
             finish()
+        }
+
+        improveSkillsButton.setOnClickListener{
+            val intent = Intent(this, ImproveSkillsActivity::class.java)
+            startActivity(intent)
         }
     }
 
