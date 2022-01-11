@@ -16,4 +16,5 @@
     <string name="session_history">Driver Sessions History</string>
     <string name="improve_skills">Improve Driving Skills</string>
     <string name="driving_session">Driving Session</string>
+    <string name="average_speed">Average Speed</string>
 </resources>
