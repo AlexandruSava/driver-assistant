@@ -32,6 +32,7 @@ class DashboardActivity : AppCompatActivity(){
     private lateinit var logoutButton: Button
 
     private lateinit var improveSkillsButton: ImageButton
+    private lateinit var historyButton: ImageButton
 
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
@@ -75,6 +76,7 @@ class DashboardActivity : AppCompatActivity(){
         startSessionButton = findViewById(R.id.button3)
         logoutButton = findViewById(R.id.logout_btn)
         improveSkillsButton = findViewById(R.id.improve_skills_btn)
+        historyButton = findViewById(R.id.imageButton2)
 
         startSessionButton.setOnClickListener {
             val intent = Intent(this, DrivingSessionActivity::class.java)
@@ -92,6 +94,11 @@ class DashboardActivity : AppCompatActivity(){
 
         improveSkillsButton.setOnClickListener{
             val intent = Intent(this, ImproveSkillsActivity::class.java)
+            startActivity(intent)
+        }
+
+        historyButton.setOnClickListener{
+            val intent = Intent(this, SessionsHistoryActivity::class.java)
             startActivity(intent)
         }
     }
