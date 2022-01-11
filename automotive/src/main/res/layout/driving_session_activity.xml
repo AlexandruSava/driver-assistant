@@ -78,6 +78,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notification"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -88,9 +89,9 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="20dp"
+                android:paddingLeft="20dp"
                 android:text="We noticed you were speeding at 20:10, please slow down We noticed you were speeding at 20:10, please slow down."
                 android:textSize="30dp"
-                android:paddingLeft="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
