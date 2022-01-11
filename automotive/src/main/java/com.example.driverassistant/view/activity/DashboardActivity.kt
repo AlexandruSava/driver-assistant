@@ -1,4 +1,4 @@
-package com.example.driverassistant.view
+package com.example.driverassistant.view.activity
 
 import android.Manifest
 import android.car.Car

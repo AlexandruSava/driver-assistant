@@ -1,4 +1,4 @@
-package com.example.driverassistant.view
+package com.example.driverassistant.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,28 +11,28 @@ import com.example.driverassistant.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class RegisterActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var registerButton: Button
-    private lateinit var gotoLoginButton: Button
+    private lateinit var loginButton: Button
+    private lateinit var gotoRegisterButton: Button
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.register_activity)
+        setContentView(R.layout.login_activity)
 
-        registerButton = findViewById(R.id.btn_register)
-        gotoLoginButton = findViewById(R.id.btn_goto_login)
-        emailEditText = findViewById(R.id.et_register_email)
-        passwordEditText = findViewById(R.id.et_register_password)
+        loginButton = findViewById(R.id.btn_login)
+        gotoRegisterButton = findViewById(R.id.btn_goto_register)
+        emailEditText = findViewById(R.id.et_login_email)
+        passwordEditText = findViewById(R.id.et_login_password)
 
-        gotoLoginButton.setOnClickListener {
-            onBackPressed()
+        gotoRegisterButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        registerButton.setOnClickListener {
+        loginButton.setOnClickListener {
             when {
                 TextUtils.isEmpty(emailEditText.text.toString().trim { it <= ' ' }) -> {
                     Toast.makeText(
@@ -54,14 +54,14 @@ class RegisterActivity : AppCompatActivity() {
                     val email: String = emailEditText.text.toString().trim { it <= ' ' }
                     val password: String = passwordEditText.text.toString().trim { it <= ' ' }
 
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 val firebaseUser: FirebaseUser = task.result!!.user!!
 
                                 Toast.makeText(
                                     this,
-                                    "You are registered successfully.",
+                                    "Login successful.",
                                     Toast.LENGTH_SHORT
                                 ).show()
 

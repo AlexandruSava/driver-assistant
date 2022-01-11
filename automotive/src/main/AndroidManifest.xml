@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
 
-        <activity android:exported="true" android:name=".view.LoginActivity">
+        <activity android:exported="true" android:name=".view.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,29 +31,29 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.RegisterActivity">
+        <activity android:name=".view.activity.RegisterActivity">
 
         </activity>
 
         <activity android:exported="true"
-            android:name=".view.DrivingSessionActivity">
+            android:name=".view.activity.DrivingSessionActivity">
 
 
         </activity>
 
-        <activity android:name=".view.DashboardActivity">
+        <activity android:name=".view.activity.DashboardActivity">
 
         </activity>
 
-        <activity android:name=".view.ImproveDrivingSkillsActivity">
+        <activity android:name=".view.activity.ImproveDrivingSkillsActivity">
 
         </activity>
 
-        <activity android:name=".view.DrivingSessionsHistoryActivity">
+        <activity android:name=".view.activity.DrivingSessionsHistoryActivity">
 
         </activity>
 
-        <activity android:name=".view.DetailedDrivingSessionActivity">
+        <activity android:name=".view.activity.DetailedDrivingSessionActivity">
 
         </activity>
 

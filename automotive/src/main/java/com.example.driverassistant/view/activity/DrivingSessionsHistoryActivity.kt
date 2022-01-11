@@ -1,4 +1,4 @@
-package com.example.driverassistant.view
+package com.example.driverassistant.view.activity
 
 import android.os.Bundle
 import android.widget.ImageButton
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
+import com.example.driverassistant.view.adapter.DrivingSessionsHistoryAdapter
 
 class DrivingSessionsHistoryActivity: AppCompatActivity() {
     private lateinit var listAdapterDrivingSessions: DrivingSessionsHistoryAdapter

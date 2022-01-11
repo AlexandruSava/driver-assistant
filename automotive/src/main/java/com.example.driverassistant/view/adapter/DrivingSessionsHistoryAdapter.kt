@@ -1,4 +1,4 @@
-package com.example.driverassistant.view
+package com.example.driverassistant.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
