@@ -10,11 +10,14 @@
         <entry key="..\:/Users/Ana/AndroidStudioProjects/driver-assistant/automotive/src/main/res/layout/main_activity.xml" value="0.4" />
         <entry key="..\:/Users/Ana/AndroidStudioProjects/driver-assistant/automotive/src/main/res/layout/register_activity.xml" value="0.25416666666666665" />
         <entry key="automotive/src/main/res/layout/dashboard_activity.xml" value="0.2740885416666667" />
+        <entry key="automotive/src/main/res/layout/detailed_driving_session_activity.xml" value="0.42304421768707484" />
         <entry key="automotive/src/main/res/layout/driving_session_activity.xml" value="0.2740885416666667" />
+        <entry key="automotive/src/main/res/layout/driving_sessions_history_activity.xml" value="0.42304421768707484" />
         <entry key="automotive/src/main/res/layout/home.xml" value="0.19791666666666666" />
         <entry key="automotive/src/main/res/layout/home_activity.xml" value="0.4362244897959184" />
         <entry key="automotive/src/main/res/layout/improve_skills.xml" value="0.2740885416666667" />
         <entry key="automotive/src/main/res/layout/notification.xml" value="0.5" />
+        <entry key="automotive/src/main/res/layout/session_details.xml" value="0.42304421768707484" />
       </map>
     </option>
   </component>

@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
-import com.example.driverassistant.model.AdviceModel
 import com.example.driverassistant.model.DrivingSession
-import com.example.driverassistant.model.Notification
 
-class HistoryAdaptor(private val sessionsList: MutableList<DrivingSession>, private val onClick: (DrivingSession) -> (Unit)): RecyclerView.Adapter<HistoryAdaptor.HistoryViewHolder>() {
+class DrivingSessionsHistoryAdapter(private val sessionsList: MutableList<DrivingSession>, private val onClick: (DrivingSession) -> (Unit)): RecyclerView.Adapter<DrivingSessionsHistoryAdapter.HistoryViewHolder>() {
 
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
@@ -23,7 +21,7 @@ class HistoryAdaptor(private val sessionsList: MutableList<DrivingSession>, priv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.one_driving_session, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.driving_session_card, parent, false)
 
         return HistoryViewHolder(view)
     }

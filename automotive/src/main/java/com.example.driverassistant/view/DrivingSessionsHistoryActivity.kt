@@ -6,18 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
-import com.example.driverassistant.model.AdviceModel
 import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
 
-class SessionsHistoryActivity: AppCompatActivity() {
-    private lateinit var listAdapter: HistoryAdaptor
+class DrivingSessionsHistoryActivity: AppCompatActivity() {
+    private lateinit var listAdapterDrivingSessions: DrivingSessionsHistoryAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.driving_history)
+        setContentView(R.layout.driving_sessions_history_activity)
 
         initList()
         initButtons()
@@ -37,13 +36,13 @@ class SessionsHistoryActivity: AppCompatActivity() {
         val a4 = DrivingSession("Ana", "descriere de test", 12, 23,20F, 40F, arrayList)
         val model: MutableList<DrivingSession> = mutableListOf(a1,a2,a3,a4)
 
-        listAdapter = HistoryAdaptor(model){
+        listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model){
             System.out.println("ceva")
         }
 
         recyclerView = findViewById(R.id.historyRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerView.adapter = listAdapter
+        recyclerView.adapter = listAdapterDrivingSessions
 
     }
 

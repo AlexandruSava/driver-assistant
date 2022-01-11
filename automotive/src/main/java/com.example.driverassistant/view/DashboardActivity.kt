@@ -93,12 +93,12 @@ class DashboardActivity : AppCompatActivity(){
         }
 
         improveSkillsButton.setOnClickListener{
-            val intent = Intent(this, ImproveSkillsActivity::class.java)
+            val intent = Intent(this, ImproveDrivingSkillsActivity::class.java)
             startActivity(intent)
         }
 
         historyButton.setOnClickListener{
-            val intent = Intent(this, SessionsHistoryActivity::class.java)
+            val intent = Intent(this, DrivingSessionsHistoryActivity::class.java)
             startActivity(intent)
         }
     }

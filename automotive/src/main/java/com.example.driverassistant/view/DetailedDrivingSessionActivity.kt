@@ -6,17 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
-import com.example.driverassistant.model.AdviceModel
 import com.example.driverassistant.model.Notification
 
-class DetailedActivity: AppCompatActivity() {
-    private lateinit var listAdapter: NotifAdaptor
+class DetailedDrivingSessionActivity: AppCompatActivity() {
+    private lateinit var listAdapter: NotificationAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.session_details)
+        setContentView(R.layout.detailed_driving_session_activity)
 
         initList()
         initButtons()
@@ -28,7 +27,7 @@ class DetailedActivity: AppCompatActivity() {
         val n2 = Notification("hei", "ceva text", "mesaj",12,12)
         val model: MutableList<Notification> = mutableListOf(n1,n2)
 
-        listAdapter = NotifAdaptor(model){
+        listAdapter = NotificationAdapter(model){
             System.out.println("ceva")
         }
 
