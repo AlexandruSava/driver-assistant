@@ -13,7 +13,8 @@
         <entry key="automotive/src/main/res/layout/driving_session_activity.xml" value="0.2740885416666667" />
         <entry key="automotive/src/main/res/layout/home.xml" value="0.19791666666666666" />
         <entry key="automotive/src/main/res/layout/home_activity.xml" value="0.4362244897959184" />
-        <entry key="automotive/src/main/res/layout/notification.xml" value="0.2740885416666667" />
+        <entry key="automotive/src/main/res/layout/improve_skills.xml" value="0.2740885416666667" />
+        <entry key="automotive/src/main/res/layout/notification.xml" value="0.5" />
       </map>
     </option>
   </component>
