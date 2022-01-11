@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.driverassistant.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class DashboardActivity : AppCompatActivity(){
 
@@ -18,6 +20,7 @@ class DashboardActivity : AppCompatActivity(){
 
     private lateinit var welcomeTextView: TextView
     private lateinit var startSessionButton: Button
+    private lateinit var logoutButton: Button
 
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
@@ -38,12 +41,20 @@ class DashboardActivity : AppCompatActivity(){
 
     private fun initializeButtons() {
         startSessionButton = findViewById(R.id.button3)
+        logoutButton = findViewById(R.id.logout_btn)
 
         startSessionButton.setOnClickListener {
             val intent = Intent(this, DrivingSessionActivity::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("email", email)
             startActivity(intent)
+        }
+
+        logoutButton.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            Firebase.auth.signOut()
+            startActivity(intent)
+            finish()
         }
     }
 

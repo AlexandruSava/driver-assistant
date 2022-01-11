@@ -60,16 +60,11 @@ class DrivingSessionActivity : AppCompatActivity() {
         setUserAndEmail()
         initializeTextViews()
         initializeButtonsListeners()
-        initializeListView()
         initializeCar()
         initializeLocation()
         initializeSensorDataCallbacks()
 
         startDrivingSession(userId, email)
-    }
-
-    private fun initializeListView() {
-        notificationListView = findViewById(R.id.notification_list)
     }
 
     override fun onResume() {
