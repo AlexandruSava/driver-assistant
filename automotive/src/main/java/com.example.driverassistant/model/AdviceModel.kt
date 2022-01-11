@@ -1,6 +1,3 @@
 package com.example.driverassistant.model
 
-class AdviceModel(title: String, description: String) {
-    val title = title
-    val description = description
-}
+data class AdviceModel(val title: String, val description: String)
