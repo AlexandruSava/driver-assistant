@@ -1,16 +1,26 @@
 package com.example.driverassistant.view.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
+import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
 import com.example.driverassistant.view.adapter.DrivingSessionsHistoryAdapter
+import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 class DrivingSessionsHistoryActivity: AppCompatActivity() {
+    private val databaseController = DatabaseController()
+
+    private lateinit var userId: String
+    private lateinit var email: String
+
     private lateinit var listAdapterDrivingSessions: DrivingSessionsHistoryAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageButton: ImageButton
@@ -19,27 +29,23 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driving_sessions_history_activity)
 
-        initList()
         initButtons()
-
+        setUserAndEmail()
+        getStorageDataAndInitList()
     }
 
-    private fun initList(){
-        val n1 = Notification("hei", "ceva text", "mesaj",12,12)
-        val n2 = Notification("hei", "ceva text", "mesaj",12,12)
-        val arrayList: ArrayList<Notification> = ArrayList()
-        arrayList.add(n1)
-        arrayList.add(n2)
-
-        val a1 = DrivingSession("Ana", "descriere de test", 12, 23,20F, 40F, arrayList)
-        val a2 = DrivingSession("Ana", "descriere de test", 12, 23,20F, 40F, arrayList)
-        val a3 = DrivingSession("Ana", "descriere de test", 12, 23,20F, 40F, arrayList)
-        val a4 = DrivingSession("Ana", "descriere de test", 12, 23,20F, 40F, arrayList)
-        val model: MutableList<DrivingSession> = mutableListOf(a1,a2,a3,a4)
-
-        listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model){
-            System.out.println("ceva")
+    private fun getStorageDataAndInitList() {
+        val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
+        if (initialized) {
+            val drivingSessionsList = databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            initList(drivingSessionsList)
         }
+    }
+
+    private fun initList(drivingSessionsList: ArrayList<DrivingSession>){
+        val model: MutableList<DrivingSession> = drivingSessionsList.reversed().toMutableList()
+
+        listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model) { }
 
         recyclerView = findViewById(R.id.historyRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -53,5 +59,15 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
             onBackPressed()
             finish()
         }
+    }
+
+    private fun setUserAndEmail() {
+        val userIdString = intent.getStringExtra("userId")
+        val emailString = intent.getStringExtra("email")
+        if (!userIdString.isNullOrEmpty() && !emailString.isNullOrEmpty()) {
+            userId = userIdString
+            email = emailString
+        }
+        Log.d("SESSION USER:", "$userId $email")
     }
 }

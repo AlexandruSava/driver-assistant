@@ -12,6 +12,7 @@
         <entry key="automotive/src/main/res/layout/dashboard_activity.xml" value="0.75" />
         <entry key="automotive/src/main/res/layout/detailed_driving_session_activity.xml" value="0.42304421768707484" />
         <entry key="automotive/src/main/res/layout/driving_session_activity.xml" value="0.5" />
+        <entry key="automotive/src/main/res/layout/driving_session_card.xml" value="0.5" />
         <entry key="automotive/src/main/res/layout/driving_sessions_history_activity.xml" value="0.42304421768707484" />
         <entry key="automotive/src/main/res/layout/home.xml" value="0.19791666666666666" />
         <entry key="automotive/src/main/res/layout/home_activity.xml" value="0.4362244897959184" />

@@ -99,6 +99,8 @@ class DashboardActivity : AppCompatActivity(){
 
         historyButton.setOnClickListener{
             val intent = Intent(this, DrivingSessionsHistoryActivity::class.java)
+            intent.putExtra("userId", userId)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
     }
