@@ -31,10 +31,10 @@ class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList
         return drivingSessionsList.size
     }
 
-    lateinit var mClickListener: ClickListener
+    lateinit var clickListener: ClickListener
 
     fun setOnClickListener(aClickListener: ClickListener){
-        mClickListener = aClickListener
+        clickListener = aClickListener
     }
 
     interface ClickListener{
@@ -46,20 +46,18 @@ class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList
             itemView.setOnClickListener(this)
         }
 
-        fun bind(session: DrivingSession){
-            val realIndex = itemCount - index
-            val stringIndex = "#$realIndex Driving Session"
-            val score = session.finalScore.toInt()
+        fun bind(drivingSession: DrivingSession){
+            val stringIndex = "#${drivingSession.index} Driving Session"
+            val score = drivingSession.finalScore.toInt()
 
             textView1.text = stringIndex
             textView2.text = score.toString()
 
             setScoreTextViewColor(score, textView2)
-            index ++
         }
 
         override fun onClick(p0: View?) {
-            mClickListener.onClick(adapterPosition, itemView)
+            clickListener.onClick(adapterPosition, itemView)
         }
     }
 
@@ -71,9 +69,5 @@ class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList
             in 50..59 -> textView.setTextColor(Color.parseColor("#FFE14F00"))
             in 0..49 -> textView.setTextColor(Color.parseColor("#E10000"))
         }
-    }
-
-    companion object {
-        var index = 0
     }
 }

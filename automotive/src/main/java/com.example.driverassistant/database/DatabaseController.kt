@@ -34,6 +34,9 @@ class DatabaseController() {
         var drivingSessionsList = ArrayList<DrivingSession>()
         if (initializedDatabase) {
             drivingSessionsList = readDrivingSessionsDataFromLocalStorage(context, userId)
+            drivingSession.index = drivingSessionsList.size + 1
+        } else {
+            drivingSession.index = 1
         }
         drivingSessionsList.add(drivingSession)
 

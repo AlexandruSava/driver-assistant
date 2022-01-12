@@ -39,6 +39,7 @@ class DrivingSessionController {
     fun stopDrivingSession() {
         endTime = System.currentTimeMillis()
         drivingSession = DrivingSession(
+            0,
             userId,
             email,
             startTime,
