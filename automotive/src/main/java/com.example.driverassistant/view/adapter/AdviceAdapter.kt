@@ -31,28 +31,14 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>, private val onC
         return adviceList.size
     }
 
-    lateinit var mClickListener: ClickListener
-
-    fun setOnClickListener(aClickListener: ClickListener){
-        mClickListener = aClickListener
-    }
-
-    interface ClickListener{
-        fun onClick(pos: Int, aView: View)
-    }
-
-    inner class AdviceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    inner class AdviceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         init{
-            itemView.setOnClickListener(this)
+            itemView.setOnClickListener { }
         }
 
         fun bind(advice: Advice){
             textView1.text = advice.title
             textView2.text = advice.description
-        }
-
-        override fun onClick(p0: View?) {
-            mClickListener.onClick(adapterPosition, itemView)
         }
     }
 }
