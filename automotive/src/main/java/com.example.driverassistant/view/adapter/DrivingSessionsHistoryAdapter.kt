@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.model.DrivingSession
 
-class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList<DrivingSession>, private val onClick: (DrivingSession) -> (Unit)): RecyclerView.Adapter<DrivingSessionsHistoryAdapter.HistoryViewHolder>() {
+class DrivingSessionsHistoryAdapter(
+    private val drivingSessionsList: MutableList<DrivingSession>,
+    private val onClick: (DrivingSession) -> (Unit)
+): RecyclerView.Adapter<DrivingSessionsHistoryAdapter.HistoryViewHolder>() {
 
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
@@ -31,19 +34,11 @@ class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList
         return drivingSessionsList.size
     }
 
-    lateinit var clickListener: ClickListener
-
-    fun setOnClickListener(aClickListener: ClickListener){
-        clickListener = aClickListener
-    }
-
-    interface ClickListener{
-        fun onClick(pos: Int, aView: View)
-    }
-
-    inner class HistoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    inner class HistoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         init{
-            itemView.setOnClickListener(this)
+            itemView.setOnClickListener {
+                onClick(drivingSessionsList[adapterPosition])
+            }
         }
 
         fun bind(drivingSession: DrivingSession){
@@ -56,9 +51,6 @@ class DrivingSessionsHistoryAdapter(private val drivingSessionsList: MutableList
             setScoreTextViewColor(score, textView2)
         }
 
-        override fun onClick(p0: View?) {
-            clickListener.onClick(adapterPosition, itemView)
-        }
     }
 
     private fun setScoreTextViewColor(score: Int, textView: TextView) {

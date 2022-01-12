@@ -1,5 +1,6 @@
 package com.example.driverassistant.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -45,7 +46,13 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
     private fun initList(drivingSessionsList: ArrayList<DrivingSession>){
         val model: MutableList<DrivingSession> = drivingSessionsList.reversed().toMutableList()
 
-        listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model) { }
+        listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model) {
+            val intent = Intent(this, DetailedDrivingSessionActivity::class.java)
+            intent.putExtra("userId", userId)
+            intent.putExtra("email", email)
+            intent.putExtra("index", it.index)
+            startActivity(intent)
+        }
 
         recyclerView = findViewById(R.id.historyRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
