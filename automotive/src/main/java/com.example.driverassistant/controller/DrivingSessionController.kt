@@ -38,17 +38,27 @@ class DrivingSessionController {
 
     fun stopDrivingSession() {
         endTime = System.currentTimeMillis()
+        val averageSpeed = getAverageSpeed()
         drivingSession = DrivingSession(
-            0,
+            1,
             userId,
             email,
             startTime,
             endTime,
+            averageSpeed,
             drivingSessionScore,
             maxDrivingSessionScore,
             notificationList
         )
         clearSensorDataList()
+    }
+
+    private fun getAverageSpeed(): Float {
+        var sum = 0f
+        for (sensorData in sensorDataList) {
+            sum += sensorData.speed
+        }
+        return (sum / sensorDataList.size.toFloat()).toFloat()
     }
 
     fun addSensorData(sensorData: SensorData){

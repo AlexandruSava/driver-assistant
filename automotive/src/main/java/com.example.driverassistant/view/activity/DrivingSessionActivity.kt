@@ -272,6 +272,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
 
         i++
+        Log.d("Location:", "Current position is $latitude, $longitude")
 
         return speedLimit
     }

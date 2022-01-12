@@ -78,7 +78,9 @@ class DetailedDrivingSessionActivity: AppCompatActivity() {
 
             val drivingSessionTitle = "#$index Driving Session"
             val score = drivingSession.finalScore.toInt()
+            val averageSpeed = (drivingSession.averageSpeed * 3.6).toInt().toString() + " km/h"
             drivingSessionTextView.text = drivingSessionTitle
+            averageSpeedTextView.text = averageSpeed
             scoreTextView.text = score.toString()
             setScoreTextViewColor(score)
         }

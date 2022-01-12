@@ -50,7 +50,7 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
             val intent = Intent(this, DetailedDrivingSessionActivity::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("email", email)
-            intent.putExtra("index", it.index - 1)
+            intent.putExtra("index", it.index )
             startActivity(intent)
         }
 

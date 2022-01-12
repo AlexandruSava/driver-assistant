@@ -38,8 +38,24 @@ class DatabaseController() {
     }
 
     private fun getFakeDrivingSession(): ArrayList<DrivingSession> {
-        val fakeNotificationList = arrayListOf(Notification("", "", "", 0, 0L))
-        val fakeDrivingSession = DrivingSession(0, "", "", 0L, 0L, 0f, 0f, fakeNotificationList)
+        val fakeNotificationList = arrayListOf(Notification(
+            "",
+            "",
+            "",
+            0,
+            0L
+        ))
+        val fakeDrivingSession = DrivingSession(
+            0,
+            "",
+            "",
+            0L,
+            0L,
+            0f,
+            0f,
+            0f,
+            fakeNotificationList
+        )
         val fakeData = ArrayList<DrivingSession>()
         fakeData.add(fakeDrivingSession)
         return fakeData
@@ -80,7 +96,7 @@ class DatabaseController() {
         val initializedDatabase = verifyPresenceOfALocalFile(context, userId)
         if (initializedDatabase) {
             val drivingSessionsList = readDrivingSessionsDataFromLocalStorage(context, userId)
-            return drivingSessionsList[index]
+            return drivingSessionsList[index - 1]
         }
         return getFakeDrivingSession().first()
     }
