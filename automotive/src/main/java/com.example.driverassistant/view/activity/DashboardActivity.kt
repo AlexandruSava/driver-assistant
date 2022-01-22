@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +36,8 @@ class DashboardActivity : AppCompatActivity(){
     private lateinit var improveSkillsButton: ImageButton
     private lateinit var historyButton: ImageButton
 
+    private lateinit var horizontalLineImageView: ImageView
+
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
         Car.PERMISSION_EXTERIOR_ENVIRONMENT,
@@ -49,8 +53,13 @@ class DashboardActivity : AppCompatActivity(){
         setUserAndEmail()
         initializeTextViews()
         initializeButtons()
+        initializeImageViews()
 
         getStorageData()
+    }
+
+    private fun initializeImageViews() {
+        horizontalLineImageView = findViewById(R.id.imageView5)
     }
 
     override fun onResume() {
@@ -62,7 +71,12 @@ class DashboardActivity : AppCompatActivity(){
         val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
         if (initialized) {
             val drivingSessionsList = databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            scoreTextView.visibility = View.VISIBLE
+            horizontalLineImageView.visibility = View.INVISIBLE
             setAverageScore(drivingSessionsList)
+        } else {
+            scoreTextView.visibility = View.INVISIBLE
+            horizontalLineImageView.visibility = View.VISIBLE
         }
     }
 
