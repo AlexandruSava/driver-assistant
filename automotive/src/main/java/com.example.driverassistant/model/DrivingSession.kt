@@ -8,6 +8,7 @@ data class DrivingSession(
     val email: String,
     val startTime: Long,
     val endTime: Long,
+    val duration: Long,
     val averageSpeed: Float,
     val finalScore: Float,
     val finalMaximumScore: Float,

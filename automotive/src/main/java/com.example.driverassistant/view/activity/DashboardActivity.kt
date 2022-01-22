@@ -54,17 +54,15 @@ class DashboardActivity : AppCompatActivity(){
         initializeTextViews()
         initializeButtons()
         initializeImageViews()
-
-        getStorageData()
-    }
-
-    private fun initializeImageViews() {
-        horizontalLineImageView = findViewById(R.id.imageView5)
     }
 
     override fun onResume() {
         super.onResume()
         getStorageData()
+    }
+
+    private fun initializeImageViews() {
+        horizontalLineImageView = findViewById(R.id.imageView5)
     }
 
     private fun getStorageData() {

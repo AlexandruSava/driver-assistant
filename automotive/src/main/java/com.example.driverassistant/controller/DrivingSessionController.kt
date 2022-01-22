@@ -13,7 +13,6 @@ class DrivingSessionController {
     private lateinit var userId: String
     private lateinit var email: String
     private var startTime: Long = 0
-    private var endTime: Long = 0
     private var drivingSessionScore: Float = 100f
     private var maxDrivingSessionScore: Float = 100f
     private var notificationList = ArrayList<Notification>()
@@ -37,7 +36,8 @@ class DrivingSessionController {
     }
 
     fun stopDrivingSession() {
-        endTime = System.currentTimeMillis()
+        val endTime = System.currentTimeMillis()
+        val duration = endTime - startTime
         val averageSpeed = getAverageSpeed()
         drivingSession = DrivingSession(
             1,
@@ -45,6 +45,7 @@ class DrivingSessionController {
             email,
             startTime,
             endTime,
+            duration,
             averageSpeed,
             drivingSessionScore,
             maxDrivingSessionScore,
