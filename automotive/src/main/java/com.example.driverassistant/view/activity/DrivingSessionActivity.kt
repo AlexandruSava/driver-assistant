@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 class DrivingSessionActivity : AppCompatActivity() {
-    private val mainController = DrivingSessionController()
+    private val drivingSessionController = DrivingSessionController()
 
     private lateinit var userId: String
     private lateinit var email: String
@@ -143,13 +143,13 @@ class DrivingSessionActivity : AppCompatActivity() {
 
                 sensorData = SensorData(speed, temperature, currentLocation, speedLimit)
 
-                mainController.addSensorData(sensorData)
-                val score: Float = mainController.analyzeDrivingSession()
+                drivingSessionController.addSensorData(sensorData)
+                val score: Float = drivingSessionController.analyzeDrivingSession()
 
                 scoreTextView.text = score.toInt().toString()
                 setScoreTextViewColor(score.toInt())
 
-                val notification = mainController.getLastNotification()
+                val notification = drivingSessionController.getLastNotification()
                 notificationTitleTextView.text = notification.title
                 notificationMessageTextView.text = notification.message
             }
@@ -174,7 +174,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         listenLocationUpdates()
         listenSensorDataUpdates()
 
-        mainController.startDrivingSession(userId, email)
+        drivingSessionController.startDrivingSession(userId, email)
     }
 
     private fun stopDrivingSession() {
@@ -185,8 +185,8 @@ class DrivingSessionActivity : AppCompatActivity() {
         stopLocationUpdates()
         stopSensorDataUpdates()
 
-        mainController.stopDrivingSession()
-        val drivingSession = mainController.getDrivingSession()
+        drivingSessionController.stopDrivingSession()
+        val drivingSession = drivingSessionController.getDrivingSession()
         DatabaseController()
             .writeDrivingSessionsDataInLocalStorage(
                 this,
