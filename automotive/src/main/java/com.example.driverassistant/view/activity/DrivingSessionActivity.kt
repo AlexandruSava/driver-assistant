@@ -8,13 +8,17 @@ import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import com.example.driverassistant.R
 import com.example.driverassistant.controller.DrivingSessionController
 import com.example.driverassistant.database.DatabaseController
@@ -43,11 +47,15 @@ class DrivingSessionActivity : AppCompatActivity() {
     private lateinit var notificationTitleTextView: TextView
     private lateinit var notificationMessageTextView: TextView
     private lateinit var stopButton: Button
+    private lateinit var arrowUpImageView: ImageView
+    private lateinit var arrowDownImageView: ImageView
+    private lateinit var horizontalLineImageView: ImageView
 
     private var i = 10
     private var speed = 0
     private var speedLimit = 30
     private var temperature = 0
+    private var lastScore = 100f
     private lateinit var currentLocation: Location
 
     private var sessionStarted = false
@@ -61,6 +69,7 @@ class DrivingSessionActivity : AppCompatActivity() {
         setUserAndEmail()
         initializeTextViews()
         initializeButtonsListeners()
+        initializeImageViews()
         initializeCar()
         initializeLocation()
         initializeSensorDataCallbacks()
@@ -108,6 +117,15 @@ class DrivingSessionActivity : AppCompatActivity() {
         }
     }
 
+    private fun initializeImageViews() {
+        arrowUpImageView = findViewById(R.id.imageView4)
+        arrowDownImageView = findViewById(R.id.imageView7)
+        horizontalLineImageView = findViewById(R.id.imageView8)
+
+        arrowUpImageView.visibility = View.INVISIBLE
+        arrowDownImageView.visibility = View.INVISIBLE
+    }
+
     private fun initializeCar() {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
             return
@@ -146,12 +164,35 @@ class DrivingSessionActivity : AppCompatActivity() {
                 drivingSessionController.addSensorData(sensorData)
                 val score: Float = drivingSessionController.analyzeDrivingSession()
 
-                scoreTextView.text = score.toInt().toString()
+                setArrowImageViewVisibility(lastScore, score)
+
+                lastScore = score
+                scoreTextView.text = lastScore.toInt().toString()
                 setScoreTextViewColor(score.toInt())
 
                 val notification = drivingSessionController.getLastNotification()
                 notificationTitleTextView.text = notification.title
                 notificationMessageTextView.text = notification.message
+            }
+
+            private fun setArrowImageViewVisibility(lastScore: Float, score: Float) {
+                when {
+                    lastScore == score -> {
+                        arrowDownImageView.visibility = View.INVISIBLE
+                        arrowUpImageView.visibility = View.INVISIBLE
+                        horizontalLineImageView.visibility = View.VISIBLE
+                    }
+                    lastScore < score -> {
+                        arrowDownImageView.visibility = View.INVISIBLE
+                        arrowUpImageView.visibility = View.VISIBLE
+                        horizontalLineImageView.visibility = View.INVISIBLE
+                    }
+                    lastScore > score -> {
+                        arrowDownImageView.visibility = View.VISIBLE
+                        arrowUpImageView.visibility = View.INVISIBLE
+                        horizontalLineImageView.visibility = View.INVISIBLE
+                    }
+                }
             }
         }
     }
