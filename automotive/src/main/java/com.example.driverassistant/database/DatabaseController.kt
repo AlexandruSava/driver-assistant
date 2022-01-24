@@ -6,9 +6,18 @@ import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class DatabaseController() {
-    fun getDrivingSessionsDataFromLocalStorage(context: Context, userId: String) : ArrayList<DrivingSession> {
+    private val database =
+        Firebase.database("https://driver-assistant-f8cd9-default-rtdb.europe-west1.firebasedatabase.app/")
+            .getReference("driving_sessions")
+
+    fun getDrivingSessionsDataFromLocalStorage(
+        context: Context,
+        userId: String
+    ): ArrayList<DrivingSession> {
         Log.d("STORAGE", "Attempting to read data from local storage for user $userId")
         val data = readDrivingSessionsDataFromLocalStorage(context, userId)
         Log.d("STORAGE", "Successfully read data: $data")
@@ -38,13 +47,15 @@ class DatabaseController() {
     }
 
     private fun getFakeDrivingSession(): ArrayList<DrivingSession> {
-        val fakeNotificationList = arrayListOf(Notification(
-            "",
-            "",
-            "",
-            0,
-            0L
-        ))
+        val fakeNotificationList = arrayListOf(
+            Notification(
+                "",
+                "",
+                "",
+                0,
+                0L
+            )
+        )
         val fakeDrivingSession = DrivingSession(
             0,
             "",
@@ -62,7 +73,11 @@ class DatabaseController() {
         return fakeData
     }
 
-    fun writeDrivingSessionsDataInLocalStorage(context: Context, userId: String, drivingSession: DrivingSession) {
+    fun writeDrivingSessionsDataInLocalStorage(
+        context: Context,
+        userId: String,
+        drivingSession: DrivingSession
+    ) {
         val initializedDatabase = verifyPresenceOfALocalFile(context, userId)
         var drivingSessionsList = ArrayList<DrivingSession>()
         if (initializedDatabase) {
@@ -83,9 +98,11 @@ class DatabaseController() {
         ).use {
             it.write(data)
         }
+
+        database.child(userId).setValue(drivingSessionsList)
     }
 
-    fun verifyPresenceOfALocalFile(context: Context, userId: String) : Boolean {
+    fun verifyPresenceOfALocalFile(context: Context, userId: String): Boolean {
         val files: Array<String> = context.fileList()
         if (userId in files) {
             return true
@@ -93,7 +110,11 @@ class DatabaseController() {
         return false
     }
 
-    fun getDriverSessionBySessionIndex(context: Context, userId: String, index: Int) : DrivingSession {
+    fun getDriverSessionBySessionIndex(
+        context: Context,
+        userId: String,
+        index: Int
+    ): DrivingSession {
         val initializedDatabase = verifyPresenceOfALocalFile(context, userId)
         if (initializedDatabase) {
             val drivingSessionsList = readDrivingSessionsDataFromLocalStorage(context, userId)
