@@ -8,7 +8,6 @@ import android.car.hardware.property.CarPropertyManager
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -18,10 +17,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.isVisible
 import com.example.driverassistant.R
 import com.example.driverassistant.controller.DrivingSessionController
 import com.example.driverassistant.database.DatabaseController
+import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.SensorData
 import com.google.android.gms.location.*
 import java.util.concurrent.TimeUnit
@@ -44,8 +43,8 @@ class DrivingSessionActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
 
     private lateinit var scoreTextView: TextView
-    private lateinit var notificationTitleTextView: TextView
-    private lateinit var notificationMessageTextView: TextView
+    private lateinit var warningEventTitleTextView: TextView
+    private lateinit var warningEventMessageTextView: TextView
     private lateinit var stopButton: Button
     private lateinit var arrowUpImageView: ImageView
     private lateinit var arrowDownImageView: ImageView
@@ -105,8 +104,8 @@ class DrivingSessionActivity : AppCompatActivity() {
 
     private fun initializeTextViews() {
         scoreTextView = findViewById(R.id.textView4)
-        notificationTitleTextView = findViewById(R.id.textView7)
-        notificationMessageTextView = findViewById(R.id.textView2)
+        warningEventTitleTextView = findViewById(R.id.textView7)
+        warningEventMessageTextView = findViewById(R.id.textView2)
     }
 
     private fun initializeButtonsListeners() {
@@ -131,7 +130,7 @@ class DrivingSessionActivity : AppCompatActivity() {
             return
         }
 
-        if(::car.isInitialized) {
+        if (::car.isInitialized) {
             return
         }
 
@@ -159,7 +158,7 @@ class DrivingSessionActivity : AppCompatActivity() {
 
                 val speedLimit = getSpeedLimit(latitude, longitude)
 
-                sensorData = SensorData(speed, temperature, currentLocation, speedLimit)
+                sensorData = SensorData(speed, temperature, latitude, longitude, speedLimit)
 
                 drivingSessionController.addSensorData(sensorData)
                 val score: Float = drivingSessionController.analyzeDrivingSession()
@@ -168,11 +167,27 @@ class DrivingSessionActivity : AppCompatActivity() {
 
                 lastScore = score
                 scoreTextView.text = lastScore.toInt().toString()
-                setScoreTextViewColor(score.toInt())
 
-                val notification = drivingSessionController.getLastNotification()
-                notificationTitleTextView.text = notification.title
-                notificationMessageTextView.text = notification.message
+                setScoreTextViewColor(score.toInt())
+                setWarningEventTextViews()
+            }
+
+            private fun setWarningEventTextViews() {
+                val warningEvent = drivingSessionController.getLastWarningEvent()
+                var title = "Error"
+                var message = "Error"
+                when (warningEvent.type) {
+                    "good_driving" -> {
+                        title = Notification.GOOD_DRIVING.title
+                        message = Notification.GOOD_DRIVING.message
+                    }
+                    "speeding" -> {
+                        title = Notification.SPEEDING.title
+                        message = Notification.SPEEDING.message
+                    }
+                }
+                warningEventTitleTextView.text = title
+                warningEventMessageTextView.text = message
             }
 
             private fun setArrowImageViewVisibility(lastScore: Float, score: Float) {
@@ -255,7 +270,7 @@ class DrivingSessionActivity : AppCompatActivity() {
     private fun initializeSensorDataCallbacks() {
         speedCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(carPropertyValue: CarPropertyValue<*>) {
-                speed = (carPropertyValue.value as Float).toInt()
+                speed = ((carPropertyValue.value as Float)*3.6).toInt()
             }
 
             override fun onErrorEvent(p0: Int, p1: Int) {

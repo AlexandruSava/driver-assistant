@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationRecyclerView"
+        android:id="@+id/warningEventRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="160dp"
@@ -36,7 +36,7 @@
         android:layout_marginTop="47dp"
         android:layout_marginEnd="201dp"
         android:layout_marginBottom="69dp"
-        app:layout_constraintBottom_toTopOf="@+id/notificationRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/warningEventRecyclerView"
         app:layout_constraintEnd_toStartOf="@+id/textView9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

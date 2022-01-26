@@ -134,7 +134,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/notification"
+            android:id="@+id/warningEvent"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -183,7 +183,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.2"
-                app:srcCompat="@drawable/ic_notification" />
+                app:srcCompat="@drawable/ic_warning_event" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

@@ -20,7 +20,7 @@ import com.example.driverassistant.model.DrivingSession
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class DashboardActivity : AppCompatActivity(){
+class DashboardActivity : AppCompatActivity() {
 
     private val dashboardController = DashboardController()
     private val databaseController = DatabaseController()
@@ -68,7 +68,8 @@ class DashboardActivity : AppCompatActivity(){
     private fun getStorageData() {
         val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
         if (initialized) {
-            val drivingSessionsList = databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            val drivingSessionsList =
+                databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
             scoreTextView.visibility = View.VISIBLE
             horizontalLineImageView.visibility = View.INVISIBLE
             setAverageScore(drivingSessionsList)
@@ -97,19 +98,19 @@ class DashboardActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        logoutButton.setOnClickListener{
+        logoutButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             Firebase.auth.signOut()
             startActivity(intent)
             finish()
         }
 
-        improveSkillsButton.setOnClickListener{
+        improveSkillsButton.setOnClickListener {
             val intent = Intent(this, ImproveDrivingSkillsActivity::class.java)
             startActivity(intent)
         }
 
-        historyButton.setOnClickListener{
+        historyButton.setOnClickListener {
             val intent = Intent(this, DrivingSessionsHistoryActivity::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("email", email)

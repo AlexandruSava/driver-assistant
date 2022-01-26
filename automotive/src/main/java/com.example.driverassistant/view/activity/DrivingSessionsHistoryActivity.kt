@@ -10,13 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.model.DrivingSession
-import com.example.driverassistant.model.Notification
 import com.example.driverassistant.view.adapter.DrivingSessionsHistoryAdapter
-import java.util.*
-import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
-class DrivingSessionsHistoryActivity: AppCompatActivity() {
+class DrivingSessionsHistoryActivity : AppCompatActivity() {
     private val databaseController = DatabaseController()
 
     private lateinit var userId: String
@@ -38,19 +35,20 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
     private fun getStorageDataAndInitList() {
         val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
         if (initialized) {
-            val drivingSessionsList = databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            val drivingSessionsList =
+                databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
             initList(drivingSessionsList)
         }
     }
 
-    private fun initList(drivingSessionsList: ArrayList<DrivingSession>){
+    private fun initList(drivingSessionsList: ArrayList<DrivingSession>) {
         val model: MutableList<DrivingSession> = drivingSessionsList.reversed().toMutableList()
 
         listAdapterDrivingSessions = DrivingSessionsHistoryAdapter(model) {
             val intent = Intent(this, DetailedDrivingSessionActivity::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("email", email)
-            intent.putExtra("index", it.index )
+            intent.putExtra("index", it.index)
             startActivity(intent)
         }
 
@@ -60,7 +58,7 @@ class DrivingSessionsHistoryActivity: AppCompatActivity() {
 
     }
 
-    private fun initButtons(){
+    private fun initButtons() {
         imageButton = findViewById(R.id.imageButton4)
         imageButton.setOnClickListener {
             onBackPressed()

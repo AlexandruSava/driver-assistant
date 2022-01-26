@@ -3,13 +3,14 @@ package com.example.driverassistant.database
 import android.content.Context
 import android.util.Log
 import com.example.driverassistant.model.DrivingSession
-import com.example.driverassistant.model.Notification
+import com.example.driverassistant.model.SensorData
+import com.example.driverassistant.model.WarningEvent
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class DatabaseController() {
+class DatabaseController {
     private val database =
         Firebase.database("https://driver-assistant-f8cd9-default-rtdb.europe-west1.firebasedatabase.app/")
             .getReference("driving_sessions")
@@ -47,13 +48,18 @@ class DatabaseController() {
     }
 
     private fun getFakeDrivingSession(): ArrayList<DrivingSession> {
-        val fakeNotificationList = arrayListOf(
-            Notification(
-                "",
-                "",
+        val fakeSensorData = SensorData(
+            0,
+            0,
+            0.toDouble(),
+            0.toDouble(),
+            0
+        )
+        val fakeWarningEventsList = arrayListOf(
+            WarningEvent(
                 "",
                 0,
-                0L
+                fakeSensorData
             )
         )
         val fakeDrivingSession = DrivingSession(
@@ -66,7 +72,7 @@ class DatabaseController() {
             0f,
             0f,
             0f,
-            fakeNotificationList
+            fakeWarningEventsList
         )
         val fakeData = ArrayList<DrivingSession>()
         fakeData.add(fakeDrivingSession)

@@ -2,7 +2,7 @@ package com.example.driverassistant.controller
 
 import android.util.Log
 import com.example.driverassistant.model.DrivingSession
-import com.example.driverassistant.model.Notification
+import com.example.driverassistant.model.WarningEvent
 import com.example.driverassistant.model.SensorData
 import kotlin.math.pow
 
@@ -15,7 +15,7 @@ class DrivingSessionController {
     private var startTime: Long = 0
     private var drivingSessionScore: Float = 100f
     private var maxDrivingSessionScore: Float = 100f
-    private var notificationList = ArrayList<Notification>()
+    private var warningEventsList = ArrayList<WarningEvent>()
 
     private var speedingTimes: Int = 0
 
@@ -49,7 +49,7 @@ class DrivingSessionController {
             averageSpeed,
             drivingSessionScore,
             maxDrivingSessionScore,
-            notificationList
+            warningEventsList
         )
         clearSensorDataList()
     }
@@ -59,10 +59,10 @@ class DrivingSessionController {
         for (sensorData in sensorDataList) {
             sum += sensorData.speed
         }
-        return (sum / sensorDataList.size.toFloat()).toFloat()
+        return sum / sensorDataList.size.toFloat()
     }
 
-    fun addSensorData(sensorData: SensorData){
+    fun addSensorData(sensorData: SensorData) {
         sensorDataList.add(sensorData)
         currentSensorData = sensorData
     }
@@ -71,36 +71,37 @@ class DrivingSessionController {
         sensorDataList.clear()
     }
 
-    fun analyzeDrivingSession() : Float {
+    fun analyzeDrivingSession(): Float {
         val mistakeRatio = if (currentSensorData.outsideTemp < 3) 2f else 1f
 
-        val speedRatio = (currentSensorData.speed * 3.6 / (currentSensorData.speedLimit + 10f).toDouble()).toFloat()
+        val speedRatio =
+            (currentSensorData.speed / (currentSensorData.speedLimit + 10f).toDouble()).toFloat()
 
         if (speedRatio > 1) {
             speedingTimes++
             reduceDrivingScore(mistakeRatio, speedRatio)
-            issueSpeedNotification(speedingTimes)
+            issueSpeedWarningEvent()
         } else {
             increaseDrivingScore()
         }
 
-        Log.d("SensorData:", "index: ${sensorDataList.size}, speedRatio: $speedRatio, " +
-                "drivingSessionScore: $drivingSessionScore, maxDrivingSessionScore: " +
-                "$maxDrivingSessionScore")
+        Log.d(
+            "SensorData:", "index: ${sensorDataList.size}, speedRatio: $speedRatio, " +
+                    "drivingSessionScore: $drivingSessionScore, maxDrivingSessionScore: " +
+                    "$maxDrivingSessionScore"
+        )
 
         return drivingSessionScore
     }
 
-    private fun issueSpeedNotification(speedingTimes: Int) {
-        val notification = Notification(
+    private fun issueSpeedWarningEvent() {
+        val warningEvent = WarningEvent(
             "speeding",
-            "Respect Speed Limit",
-            "We just noticed that you were speeding $speedingTimes times in this session.",
-            speedingTimes,
-            System.currentTimeMillis()
+            System.currentTimeMillis(),
+            currentSensorData
         )
-        notificationList.add(notification)
-        println(notification)
+        warningEventsList.add(warningEvent)
+        println(warningEvent)
     }
 
     private fun increaseDrivingScore() {
@@ -127,16 +128,14 @@ class DrivingSessionController {
         }
     }
 
-    fun getLastNotification(): Notification {
+    fun getLastWarningEvent(): WarningEvent {
         return if (speedingTimes > 0) {
-            notificationList.last()
+            warningEventsList.last()
         } else {
-            Notification(
-                "good-driving",
-                "Drive carefully",
-                "We noticed you're quite a good driver. No mistakes yes.",
-                0,
-                0L
+            WarningEvent(
+                "good_driving",
+                System.currentTimeMillis(),
+                currentSensorData
             )
         }
     }
