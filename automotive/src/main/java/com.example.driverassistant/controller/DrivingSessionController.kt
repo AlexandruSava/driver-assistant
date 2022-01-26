@@ -2,8 +2,11 @@ package com.example.driverassistant.controller
 
 import android.util.Log
 import com.example.driverassistant.model.DrivingSession
+import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.WarningEvent
 import com.example.driverassistant.model.SensorData
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 
 class DrivingSessionController {
@@ -96,7 +99,7 @@ class DrivingSessionController {
 
     private fun issueSpeedWarningEvent() {
         val warningEvent = WarningEvent(
-            "speeding",
+            Notification.SPEEDING.name.lowercase(),
             System.currentTimeMillis(),
             currentSensorData
         )
@@ -133,7 +136,7 @@ class DrivingSessionController {
             warningEventsList.last()
         } else {
             WarningEvent(
-                "good_driving",
+                Notification.GOOD_DRIVING.name.lowercase(),
                 System.currentTimeMillis(),
                 currentSensorData
             )
