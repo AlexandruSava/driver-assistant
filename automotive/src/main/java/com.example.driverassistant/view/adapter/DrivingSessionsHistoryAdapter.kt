@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.model.DrivingSession
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DrivingSessionsHistoryAdapter(
     private val drivingSessionsList: MutableList<DrivingSession>,
@@ -16,11 +18,13 @@ class DrivingSessionsHistoryAdapter(
 
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
+    private lateinit var textView3: TextView
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
 
         textView1 = holder.itemView.findViewById(R.id.textView10)
         textView2 = holder.itemView.findViewById(R.id.textView11)
+        textView3 = holder.itemView.findViewById(R.id.textView18)
         holder.bind(drivingSessionsList[position])
     }
 
@@ -45,9 +49,15 @@ class DrivingSessionsHistoryAdapter(
         fun bind(drivingSession: DrivingSession) {
             val stringIndex = "#${drivingSession.index} Driving Session"
             val score = drivingSession.finalScore.toInt()
+            val startTime = drivingSession.startTime
+            val date = Date(startTime)
+            val formatter = SimpleDateFormat("dd MMMM yyyy hh:mm")
+            formatter.setTimeZone( SimpleTimeZone(0, "GMT"))
+            val formattedDate = formatter.format(date)
 
             textView1.text = stringIndex
             textView2.text = score.toString()
+            textView3.text = formattedDate
 
             setScoreTextViewColor(score, textView2)
         }
