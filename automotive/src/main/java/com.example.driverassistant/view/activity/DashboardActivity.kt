@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +20,7 @@ import com.example.driverassistant.model.DrivingSession
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class DashboardActivity : AppCompatActivity(){
+class DashboardActivity : AppCompatActivity() {
 
     private val dashboardController = DashboardController()
     private val databaseController = DatabaseController()
@@ -33,6 +35,8 @@ class DashboardActivity : AppCompatActivity(){
 
     private lateinit var improveSkillsButton: ImageButton
     private lateinit var historyButton: ImageButton
+
+    private lateinit var horizontalLineImageView: ImageView
 
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
@@ -49,8 +53,7 @@ class DashboardActivity : AppCompatActivity(){
         setUserAndEmail()
         initializeTextViews()
         initializeButtons()
-
-        getStorageData()
+        initializeImageViews()
     }
 
     override fun onResume() {
@@ -58,11 +61,21 @@ class DashboardActivity : AppCompatActivity(){
         getStorageData()
     }
 
+    private fun initializeImageViews() {
+        horizontalLineImageView = findViewById(R.id.imageView5)
+    }
+
     private fun getStorageData() {
         val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
         if (initialized) {
-            val drivingSessionsList = databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            val drivingSessionsList =
+                databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
+            scoreTextView.visibility = View.VISIBLE
+            horizontalLineImageView.visibility = View.INVISIBLE
             setAverageScore(drivingSessionsList)
+        } else {
+            scoreTextView.visibility = View.INVISIBLE
+            horizontalLineImageView.visibility = View.VISIBLE
         }
     }
 
@@ -85,19 +98,19 @@ class DashboardActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        logoutButton.setOnClickListener{
+        logoutButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             Firebase.auth.signOut()
             startActivity(intent)
             finish()
         }
 
-        improveSkillsButton.setOnClickListener{
+        improveSkillsButton.setOnClickListener {
             val intent = Intent(this, ImproveDrivingSkillsActivity::class.java)
             startActivity(intent)
         }
 
-        historyButton.setOnClickListener{
+        historyButton.setOnClickListener {
             val intent = Intent(this, DrivingSessionsHistoryActivity::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("email", email)

@@ -1,9 +1,15 @@
 package com.example.driverassistant.model
 
-data class Notification(
-    val type: String,
+enum class Notification(
     val title: String,
-    val message: String,
-    val timesIssued: Number,
-    val timestamp: Long
-)
+    val message: String
+) {
+    GOOD_DRIVING(
+        "Drive carefully",
+        "We noticed you're quite a good driver. No mistakes yes."
+    ),
+    SPEEDING(
+        "Respect Speed Limit",
+        "We just noticed that you are speeding. Please slow down!"
+    )
+}

@@ -9,7 +9,9 @@ import com.example.driverassistant.R
 import com.example.driverassistant.model.Advice
 
 
-class AdviceAdapter(private val adviceList: MutableList<Advice>, private val onClick: (Advice) -> (Unit)): RecyclerView.Adapter<AdviceAdapter.AdviceViewHolder>() {
+class AdviceAdapter(
+    private val adviceList: MutableList<Advice>
+) : RecyclerView.Adapter<AdviceAdapter.AdviceViewHolder>() {
 
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
@@ -22,7 +24,8 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>, private val onC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdviceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.notification_card, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.warning_event_card, parent, false)
 
         return AdviceViewHolder(view)
     }
@@ -31,12 +34,12 @@ class AdviceAdapter(private val adviceList: MutableList<Advice>, private val onC
         return adviceList.size
     }
 
-    inner class AdviceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        init{
+    inner class AdviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
             itemView.setOnClickListener { }
         }
 
-        fun bind(advice: Advice){
+        fun bind(advice: Advice) {
             textView1.text = advice.title
             textView2.text = advice.description
         }

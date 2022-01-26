@@ -9,7 +9,7 @@
         <entry key="..\:/Users/Ana/AndroidStudioProjects/driver-assistant/automotive/src/main/res/layout/login_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Ana/AndroidStudioProjects/driver-assistant/automotive/src/main/res/layout/main_activity.xml" value="0.4" />
         <entry key="..\:/Users/Ana/AndroidStudioProjects/driver-assistant/automotive/src/main/res/layout/register_activity.xml" value="0.25416666666666665" />
-        <entry key="automotive/src/main/res/layout/dashboard_activity.xml" value="0.75" />
+        <entry key="automotive/src/main/res/layout/dashboard_activity.xml" value="0.5" />
         <entry key="automotive/src/main/res/layout/detailed_driving_session_activity.xml" value="0.42304421768707484" />
         <entry key="automotive/src/main/res/layout/driving_session_activity.xml" value="0.5" />
         <entry key="automotive/src/main/res/layout/driving_session_card.xml" value="0.5" />
@@ -20,6 +20,7 @@
         <entry key="automotive/src/main/res/layout/notification.xml" value="0.5" />
         <entry key="automotive/src/main/res/layout/notification_card.xml" value="0.26232993197278914" />
         <entry key="automotive/src/main/res/layout/session_details.xml" value="0.42304421768707484" />
+        <entry key="automotive/src/main/res/xml/network_security_config.xml" value="0.20195578231292516" />
       </map>
     </option>
   </component>

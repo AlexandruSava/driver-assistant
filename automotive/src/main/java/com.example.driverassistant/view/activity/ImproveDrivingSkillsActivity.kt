@@ -9,7 +9,7 @@ import com.example.driverassistant.R
 import com.example.driverassistant.model.Advice
 import com.example.driverassistant.view.adapter.AdviceAdapter
 
-class ImproveDrivingSkillsActivity: AppCompatActivity() {
+class ImproveDrivingSkillsActivity : AppCompatActivity() {
 
     private lateinit var listAdapter: AdviceAdapter
     private lateinit var recyclerView: RecyclerView
@@ -24,7 +24,7 @@ class ImproveDrivingSkillsActivity: AppCompatActivity() {
 
     }
 
-    private fun initList(){
+    private fun initList() {
         val a1 = Advice(
             "Respect Speed Limit",
             "Did you know 90% of accidents happen because of speeding?"
@@ -44,17 +44,17 @@ class ImproveDrivingSkillsActivity: AppCompatActivity() {
             "Ice can form on the road and drivers sometimes do not realize it. You should" +
                     " drive at least 25% slower than in normal conditions."
         )
-        val model: MutableList<Advice> = mutableListOf(a1,a2,a3,a4)
+        val model: MutableList<Advice> = mutableListOf(a1, a2, a3, a4)
 
-        listAdapter = AdviceAdapter(model) { }
+        listAdapter = AdviceAdapter(model)
 
-        recyclerView = findViewById(R.id.notificationRecyclerView)
+        recyclerView = findViewById(R.id.warningEventRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         recyclerView.adapter = listAdapter
 
     }
 
-    private fun initButtons(){
+    private fun initButtons() {
         imageButton = findViewById(R.id.imageButton)
         imageButton.setOnClickListener {
             onBackPressed()

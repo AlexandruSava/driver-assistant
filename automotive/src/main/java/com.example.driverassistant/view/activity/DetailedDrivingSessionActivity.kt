@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.database.DatabaseController
 import com.example.driverassistant.model.DrivingSession
-import com.example.driverassistant.model.Notification
-import com.example.driverassistant.view.adapter.NotificationAdapter
+import com.example.driverassistant.model.WarningEvent
+import com.example.driverassistant.view.adapter.WarningEventAdapter
 
-class DetailedDrivingSessionActivity: AppCompatActivity() {
+class DetailedDrivingSessionActivity : AppCompatActivity() {
     private val databaseController = DatabaseController()
 
     private lateinit var userId: String
     private lateinit var email: String
     private var index = 0
 
-    private lateinit var listAdapter: NotificationAdapter
+    private lateinit var listAdapter: WarningEventAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageButton: ImageButton
 
@@ -45,10 +45,11 @@ class DetailedDrivingSessionActivity: AppCompatActivity() {
         averageSpeedTextView = findViewById(R.id.textView17)
     }
 
-    private fun initList(drivingSession: DrivingSession){
-        val model: MutableList<Notification> = drivingSession.notificationsList.reversed().toMutableList()
+    private fun initList(drivingSession: DrivingSession) {
+        val model: MutableList<WarningEvent> =
+            drivingSession.warningEventsList.reversed().toMutableList()
 
-        listAdapter = NotificationAdapter(model) { }
+        listAdapter = WarningEventAdapter(model)
 
         recyclerView = findViewById(R.id.detailsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -56,7 +57,7 @@ class DetailedDrivingSessionActivity: AppCompatActivity() {
 
     }
 
-    private fun initButtons(){
+    private fun initButtons() {
         imageButton = findViewById(R.id.imageButton5)
         imageButton.setOnClickListener {
             onBackPressed()
@@ -78,7 +79,7 @@ class DetailedDrivingSessionActivity: AppCompatActivity() {
 
             val drivingSessionTitle = "#$index Driving Session"
             val score = drivingSession.finalScore.toInt()
-            val averageSpeed = (drivingSession.averageSpeed * 3.6).toInt().toString() + " km/h"
+            val averageSpeed = (drivingSession.averageSpeed).toInt().toString() + " km/h"
             drivingSessionTextView.text = drivingSessionTitle
             averageSpeedTextView.text = averageSpeed
             scoreTextView.text = score.toString()

@@ -12,7 +12,7 @@ import com.example.driverassistant.model.DrivingSession
 class DrivingSessionsHistoryAdapter(
     private val drivingSessionsList: MutableList<DrivingSession>,
     private val onClick: (DrivingSession) -> (Unit)
-): RecyclerView.Adapter<DrivingSessionsHistoryAdapter.HistoryViewHolder>() {
+) : RecyclerView.Adapter<DrivingSessionsHistoryAdapter.HistoryViewHolder>() {
 
     private lateinit var textView1: TextView
     private lateinit var textView2: TextView
@@ -25,7 +25,8 @@ class DrivingSessionsHistoryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.driving_session_card, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.driving_session_card, parent, false)
 
         return HistoryViewHolder(view)
     }
@@ -34,14 +35,14 @@ class DrivingSessionsHistoryAdapter(
         return drivingSessionsList.size
     }
 
-    inner class HistoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        init{
+    inner class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
             itemView.setOnClickListener {
                 onClick(drivingSessionsList[adapterPosition])
             }
         }
 
-        fun bind(drivingSession: DrivingSession){
+        fun bind(drivingSession: DrivingSession) {
             val stringIndex = "#${drivingSession.index} Driving Session"
             val score = drivingSession.finalScore.toInt()
 
