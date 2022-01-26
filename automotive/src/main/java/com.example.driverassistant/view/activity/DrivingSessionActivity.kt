@@ -177,11 +177,11 @@ class DrivingSessionActivity : AppCompatActivity() {
                 var title = "Error"
                 var message = "Error"
                 when (warningEvent.type) {
-                    "good_driving" -> {
+                    Notification.GOOD_DRIVING.name.lowercase() -> {
                         title = Notification.GOOD_DRIVING.title
                         message = Notification.GOOD_DRIVING.message
                     }
-                    "speeding" -> {
+                    Notification.SPEEDING.name.lowercase() -> {
                         title = Notification.SPEEDING.title
                         message = Notification.SPEEDING.message
                     }
