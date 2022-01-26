@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.driverassistant.R
 import com.example.driverassistant.model.Notification
 import com.example.driverassistant.model.WarningEvent
+import java.text.DateFormat
 
 class WarningEventAdapter(
     private val warningEventsList: MutableList<WarningEvent>
@@ -40,8 +41,9 @@ class WarningEventAdapter(
         }
 
         fun bind(warningEvent: WarningEvent) {
-            var title = "Error"
-            var message = "Error"
+            var title = ""
+            var message = DateFormat.getDateTimeInstance().format(warningEvent.timestamp).toString()
+            message += "\n"
             when (warningEvent.type) {
                 "good_driving" -> {
                     title = Notification.GOOD_DRIVING.title
@@ -49,9 +51,12 @@ class WarningEventAdapter(
                 }
                 "speeding" -> {
                     title = Notification.SPEEDING.title
-                    message = Notification.SPEEDING.message
+                    message += Notification.SPEEDING.message
                 }
             }
+            message += "\nSpeed: "
+            message += warningEvent.sensorData.speed.toString() + " KM/H and "
+            message += "Limit: " + warningEvent.sensorData.speedLimit.toString() + " KM/H"
             textView1.text = title
             textView2.text = message
         }
