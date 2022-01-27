@@ -108,6 +108,23 @@ class DatabaseController {
         database.child(userId).setValue(drivingSessionsList)
     }
 
+    fun writeDrivingSessionsDataInLocalStorageFromFirebase(
+        context: Context,
+        userId: String,
+        drivingSessionsList: ArrayList<DrivingSession>
+    ) {
+        Log.d("STORAGE", "Writing data to DB $drivingSessionsList")
+
+        val objectMapper = jacksonObjectMapper()
+        val data: ByteArray = objectMapper.writeValueAsBytes(drivingSessionsList)
+        context.openFileOutput(
+            userId,
+            Context.MODE_PRIVATE
+        ).use {
+            it.write(data)
+        }
+    }
+
     fun verifyPresenceOfALocalFile(context: Context, userId: String): Boolean {
         val files: Array<String> = context.fileList()
         if (userId in files) {

@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\Ana\.android\avd\Polestar_2_API_29.avd" />
+            <value value="$USER_HOME$/.android/avd/Polestar_2_API_29.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-01-23T17:04:36.611935800Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-01-27T09:23:25.867214Z" />
   </component>
 </project>

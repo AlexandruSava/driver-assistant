@@ -16,14 +16,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.driverassistant.R
 import com.example.driverassistant.controller.DashboardController
 import com.example.driverassistant.database.DatabaseController
+import com.example.driverassistant.database.FirebaseController
 import com.example.driverassistant.model.DrivingSession
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class DashboardActivity : AppCompatActivity() {
 
     private val dashboardController = DashboardController()
     private val databaseController = DatabaseController()
+    private val firebaseController = FirebaseController()
 
     private lateinit var userId: String
     private lateinit var email: String
@@ -37,6 +43,10 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var historyButton: ImageButton
 
     private lateinit var horizontalLineImageView: ImageView
+
+    private val database =
+        Firebase.database("https://driver-assistant-f8cd9-default-rtdb.europe-west1.firebasedatabase.app/")
+            .getReference("driving_sessions")
 
     private val permissions = arrayOf(
         Car.PERMISSION_SPEED,
@@ -54,6 +64,7 @@ class DashboardActivity : AppCompatActivity() {
         initializeTextViews()
         initializeButtons()
         initializeImageViews()
+        getDataFromFirebase()
     }
 
     override fun onResume() {
@@ -65,14 +76,39 @@ class DashboardActivity : AppCompatActivity() {
         horizontalLineImageView = findViewById(R.id.imageView5)
     }
 
+    private fun getDataFromFirebase() {
+        val reference = database.child(userId)
+        val context = this
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                firebaseController.getFirebaseDataAndWriteDrivingSessionsDataInLocalStorage(
+                    snapshot,
+                    userId,
+                    context
+                )
+                getStorageData()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase", "Database Error!")
+            }
+        })
+    }
+
     private fun getStorageData() {
         val initialized = databaseController.verifyPresenceOfALocalFile(this, userId)
         if (initialized) {
             val drivingSessionsList =
                 databaseController.getDrivingSessionsDataFromLocalStorage(this, userId)
-            scoreTextView.visibility = View.VISIBLE
-            horizontalLineImageView.visibility = View.INVISIBLE
-            setAverageScore(drivingSessionsList)
+            if (drivingSessionsList.isNotEmpty()) {
+                scoreTextView.visibility = View.VISIBLE
+                horizontalLineImageView.visibility = View.INVISIBLE
+                setAverageScore(drivingSessionsList)
+            } else {
+                scoreTextView.visibility = View.INVISIBLE
+                horizontalLineImageView.visibility = View.VISIBLE
+            }
         } else {
             scoreTextView.visibility = View.INVISIBLE
             horizontalLineImageView.visibility = View.VISIBLE
