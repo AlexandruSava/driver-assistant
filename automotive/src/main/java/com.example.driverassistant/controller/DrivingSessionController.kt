@@ -3,10 +3,8 @@ package com.example.driverassistant.controller
 import android.util.Log
 import com.example.driverassistant.model.DrivingSession
 import com.example.driverassistant.model.Notification
-import com.example.driverassistant.model.WarningEvent
 import com.example.driverassistant.model.SensorData
-import java.util.*
-import kotlin.collections.ArrayList
+import com.example.driverassistant.model.WarningEvent
 import kotlin.math.pow
 
 class DrivingSessionController {
